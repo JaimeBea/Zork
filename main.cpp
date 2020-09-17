@@ -1,28 +1,40 @@
 #include "common.h"
 #include "world.h"
 
-int main() {
+int main()
+{
+	// Welcome player
+
 	std::cout << "Welcome to Kroz the Gladiator!\n\n";
+
+	std::cout << "You wake up inside your cell, a man knocking on your door.\n";
+	std::cout << "- HEY! YOUR COMBAT IS STARTING SOON! WAKE UP!\n";
+	std::cout << "The man walks away. You put your clothes on.\n\n";
+
+	// Initialize world
 
 	World world;
 
+	// Game loop
+
 	std::string player_input;
-	std::vector<const std::string> tokens;
-	
+	std::vector<std::string> tokens;
 	tokens.reserve(10);
 
-	while (true) {
-		std::cout << "What do you want?\n";
-
+	while (true)
+	{
 		std::getline(std::cin, player_input);
 		Tokenize(player_input, tokens);
 
-		world.Tick(tokens);
+		if (player_input == "quit") break;
 
-		if (player_input == "exit") break;
+		world.Tick(tokens);
 	}
 
-	std::cout << "Thanks for playing!\n\n";
+	// Say goodbye to the player and exit
+
+	std::cout << "\nThanks for playing!\n\n";
+
 	system("pause");
 	return 0;
 }

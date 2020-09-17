@@ -1,11 +1,17 @@
-#ifndef JAIMEBEA_ZORK_COMMON_H__
-#define JAIMEBEA_ZORK_COMMON_H__
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <list>
 
-void Tokenize(const std::string& input, std::vector<const std::string>& output);
+enum class Direction
+{
+	North,
+	East,
+	South,
+	West
+};
 
-#endif // !JAIMEBEA_ZORK_COMMON_H__
+Direction GetOppositeDirection(const Direction direction);
+void Tokenize(const std::string& input, std::vector<std::string>& output);

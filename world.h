@@ -1,11 +1,17 @@
-#ifndef JAIMEBEA_ZORK_WORLD_H
-#define JAIMEBEA_ZORK_WORLD_H
+#pragma once
 
 #include "common.h"
+#include "entity.h"
 
-class World {
+class World
+{
 public:
-	void Tick(const std::vector<const std::string>& tokens);
+	World();
+	~World();
+
+	void Tick(const std::vector<std::string>& tokens);
+
+private:
+	std::vector<Entity*> entities;
 };
 
-#endif // !JAIMEBEA_ZORK_WORLD_H
