@@ -5,14 +5,21 @@
 enum class EntityType
 {
 	Room,
-	Exit
+	Exit,
+	Player
 };
+
+class World;
 
 class Entity
 {
 public:
-	Entity(const EntityType type, const char* name, const char* description);
+	Entity(World& world, EntityType type, const char* name, const char* description);
+	~Entity();
 
+	void Inspect() const;
+
+	World& world;
 	EntityType type;
 	std::string name;
 	std::string description;

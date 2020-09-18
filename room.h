@@ -8,7 +8,8 @@ class Exit;
 class Room : public Entity
 {
 public:
-	Room(const char* name, const char* description);
+	Room(World& world, const char* name, const char* description);
 
-	Exit* GetExit(const Direction direction) const;
+	Exit* GetExit(Direction direction) const;
+	Room* GetExitRoom(Direction direction) const;
 };

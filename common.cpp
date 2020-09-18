@@ -1,6 +1,45 @@
 #include "common.h"
 
-Direction GetOppositeDirection(const Direction direction)
+const char* GetDirectionName(Direction direction)
+{
+	switch (direction)
+	{
+	case Direction::North:
+		return "north";
+	case Direction::East:
+		return "east";
+	case Direction::South:
+		return "south";
+	case Direction::West:
+		return "west";
+	default:
+		return "unknown";
+	}
+}
+
+Direction GetDirectionFromName(const std::string& name)
+{
+	if (name == "north")
+	{
+		return Direction::North;
+	}
+	else if (name == "east")
+	{
+		return Direction::East;
+	}
+	else if (name == "south")
+	{
+		return Direction::South;
+	}
+	else if (name == "west")
+	{
+		return Direction::West;
+	}
+
+	return Direction::Unknown;
+}
+
+Direction GetOppositeDirection(Direction direction)
 {
 	switch (direction)
 	{
@@ -13,7 +52,7 @@ Direction GetOppositeDirection(const Direction direction)
 	case Direction::West:
 		return Direction::East;
 	default:
-		return Direction::South;
+		return Direction::Unknown;
 	}
 }
 
@@ -32,4 +71,5 @@ void Tokenize(const std::string& input, std::vector<std::string>& output)
 		prev = next + 1;
 		next = input.find_first_of(' ', prev);
 	}
+	output.push_back(input.substr(prev, next - prev));
 }
