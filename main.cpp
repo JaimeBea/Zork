@@ -7,8 +7,10 @@ int main()
 
 	std::cout << "Welcome to Kroz the Gladiator!\n\n";
 
-	std::cout << "You wake up inside your cell, a man knocking on your door.\n";
-	std::cout << "- HEY! YOUR COMBAT IS STARTING SOON! WAKE UP!\n";
+	std::cout << "You wake up inside your cell, a man knocking on your door.\n\n";
+
+	std::cout << "- HEY! YOUR COMBAT IS STARTING SOON! WAKE UP!\n\n";
+
 	std::cout << "The man walks away. You put your clothes on.\n\n";
 
 	// Initialize world
@@ -23,6 +25,7 @@ int main()
 
 	while (true)
 	{
+		std::cout << "> ";
 		std::getline(std::cin, player_input);
 		Tokenize(player_input, tokens);
 

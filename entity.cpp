@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "world.h"
 
-Entity::Entity(World& world, EntityType type, const char* name, const char* description) : world(world), type(type), name(name), description(description)
+Entity::Entity(World& world, EntityType type, std::string name, std::string description) : world(world), type(type), name(name), description(description)
 {
 	world.entities.push_back(this);
 }
@@ -17,4 +17,10 @@ Entity::~Entity()
 			break;
 		}
 	}
+}
+
+void Entity::Inspect() const
+{
+	std::cout << name << ":\n";
+	std::cout << description << "\n\n";
 }

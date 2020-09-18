@@ -14,10 +14,10 @@ class World;
 class Entity
 {
 public:
-	Entity(World& world, EntityType type, const char* name, const char* description);
+	Entity(World& world, EntityType type, std::string name, std::string description);
 	~Entity();
 
-	void Inspect() const;
+	virtual void Inspect() const;
 
 	World& world;
 	EntityType type;

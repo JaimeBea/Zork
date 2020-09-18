@@ -1,6 +1,6 @@
 #include "common.h"
 
-const char* GetDirectionName(Direction direction)
+std::string GetDirectionName(Direction direction)
 {
 	switch (direction)
 	{
@@ -72,4 +72,11 @@ void Tokenize(const std::string& input, std::vector<std::string>& output)
 		next = input.find_first_of(' ', prev);
 	}
 	output.push_back(input.substr(prev, next - prev));
+}
+
+bool CaseInsensitiveCompare(std::string string1, std::string string2)
+{
+	std::transform(string1.begin(), string1.end(), string1.begin(), ::tolower);
+	std::transform(string2.begin(), string2.end(), string2.begin(), ::tolower);
+	return string1 == string2;
 }
