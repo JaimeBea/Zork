@@ -74,9 +74,26 @@ void Tokenize(const std::string& input, std::vector<std::string>& output)
 	output.push_back(input.substr(prev, next - prev));
 }
 
-bool CaseInsensitiveCompare(std::string string1, std::string string2)
+std::string JoinTokens(const std::vector<std::string>& tokens, int start, int end)
 {
-	std::transform(string1.begin(), string1.end(), string1.begin(), ::tolower);
-	std::transform(string2.begin(), string2.end(), string2.begin(), ::tolower);
-	return string1 == string2;
+	std::string name = "";
+	for (int i = start; i < end; ++i)
+	{
+		name += tokens[i];
+		if (i < end - 1)
+		{
+			name += " ";
+		}
+	}
+
+	return name;
+}
+
+bool CaseInsensitiveCompare(const std::string& string1, const std::string& string2)
+{
+	std::string s1 = string1;
+	std::string s2 = string2;
+	std::transform(s1.begin(), s1.end(), s1.begin(), ::tolower);
+	std::transform(s2.begin(), s2.end(), s2.begin(), ::tolower);
+	return s1 == s2;
 }

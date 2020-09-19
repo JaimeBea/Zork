@@ -15,13 +15,13 @@ class World;
 class Entity
 {
 public:
-	Entity(World& world, EntityType type, std::string name, std::string description);
+	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description);
 	~Entity();
 
 	virtual void Inspect() const;
 
 	World& world;
-	EntityType type;
+	EntityType entity_type;
 	std::string name;
 	std::string description;
 	std::list<Entity*> contains;

@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "world.h"
 
-Entity::Entity(World& world, EntityType type, std::string name, std::string description) : world(world), type(type), name(name), description(description)
+Entity::Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description) : world(world), entity_type(entity_type), name(name), description(description)
 {
 	world.entities.push_back(this);
 }

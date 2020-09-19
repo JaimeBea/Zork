@@ -8,7 +8,7 @@ class Room;
 class Creature : public Entity
 {
 public:
-	Creature(World& world, EntityType type, std::string name, std::string description, Room& location);
+	Creature(World& world, EntityType entity_type, const std::string& name, const std::string& description, Room& location);
 	~Creature();
 
 	Room* location;

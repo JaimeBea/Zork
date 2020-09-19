@@ -2,35 +2,22 @@
 #include "room.h"
 #include "exit.h"
 
-Player::Player(World& world, std::string name, std::string description, Room& location) : Creature(world, EntityType::Player, name, description, location)
+Player::Player(World& world, const std::string& name, const std::string& description, Room& location) : Creature(world, EntityType::Player, name, description, location)
 {
 	location.Inspect();
 }
 
-// 'entity_name_tokens' is used as an auxiliary container. It will be cleared on every call.
-bool CompareEntityNameWithTokens(const std::vector<std::string>& tokens, Entity& entity, std::vector<std::string>& entity_name_tokens)
-{
-	Tokenize(entity.name, entity_name_tokens);
-	if (entity_name_tokens.size() != tokens.size() - 1) return false;
-	for (int i = 0; i < entity_name_tokens.size(); ++i)
-	{
-		if (!CaseInsensitiveCompare(tokens[i + 1], entity_name_tokens[i])) return false;
-	}
-
-	return true;
-}
-
-bool RecursivelySearchEntities(const std::vector<std::string>& tokens, const std::list<Entity*>& entities, std::vector<std::string>& entity_name_tokens)
+bool RecursivelySearchEntities(const std::list<Entity*>& entities, const std::string& name)
 {
 	for (Entity* entity : entities)
 	{
-		if (CompareEntityNameWithTokens(tokens, *entity, entity_name_tokens))
+		if (CaseInsensitiveCompare(entity->name, name))
 		{
 			entity->Inspect();
 			return true;
 		}
 
-		if (RecursivelySearchEntities(tokens, entity->contains, entity_name_tokens))
+		if (RecursivelySearchEntities(entity->contains, name))
 		{
 			return true;
 		}
@@ -39,9 +26,9 @@ bool RecursivelySearchEntities(const std::vector<std::string>& tokens, const std
 	return false;
 }
 
-bool Player::Examine(const std::vector<std::string>& tokens)
+bool Player::Examine(const std::string& name)
 {
-	if (tokens.size() == 1) // Tokens always include the word 'examine' at position 0
+	if (name == "")
 	{ 
 		location->Inspect();
 		return true;
@@ -50,7 +37,7 @@ bool Player::Examine(const std::vector<std::string>& tokens)
 	{
 		std::vector<std::string> entity_name_tokens;
 
-		if (RecursivelySearchEntities(tokens, location->contains, entity_name_tokens))
+		if (RecursivelySearchEntities(location->contains, name))
 		{
 			return true;
 		}

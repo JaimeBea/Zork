@@ -1,7 +1,7 @@
 #include "exit.h"
 #include "room.h"
 
-Exit::Exit(World& world, std::string name, std::string description, Room& origin, Room& destination, Direction direction) : Entity(world, EntityType::Exit, name, description), origin(origin), destination(destination), direction(direction)
+Exit::Exit(World& world, const std::string& name, const std::string& description, Room& origin, Room& destination, Direction direction) : Entity(world, EntityType::Exit, name, description), origin(origin), destination(destination), direction(direction)
 {
 	origin.contains.push_back(this);
 	destination.contains.push_back(this);

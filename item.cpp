@@ -1,6 +1,6 @@
 #include "item.h"
 
-Item::Item(World& world, Entity& parent, std::string name, std::string description) : Entity(world, EntityType::Item, name, description), parent(&parent)
+Item::Item(World& world, Entity& parent, ItemType item_type, const std::string& name, const std::string& description) : Entity(world, EntityType::Item, name, description), parent(&parent), item_type(item_type)
 {
 	parent.contains.push_back(this);
 }
@@ -20,7 +20,7 @@ void Item::Inspect() const
 		std::cout << "Contains:\n";
 		for (Entity* entity : contains)
 		{
-			if (entity->type == EntityType::Exit) continue;
+			if (entity->entity_type == EntityType::Exit) continue;
 
 			std::cout << "  " << entity->name << "\n";
 		}

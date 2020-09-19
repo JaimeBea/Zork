@@ -9,27 +9,27 @@ World::World()
 	// Rooms
 
 	Room* cell = new Room(*this, "Player Cell", "You find yourself inside a very small cell. There is a bed tucked in the corner.");
-	Item* player_bed = new Item(*this, *cell, "Bed", "Your bed. It's a simple wooden bed with very little padding.");
-	new Item(*this, *player_bed, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor");
+	Item* player_bed = new Item(*this, *cell, ItemType::Furniture, "Bed", "Your bed. It's a simple wooden bed with very little padding.");
+	Item* letter = new Item(*this, *player_bed, ItemType::Object, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor");
 
 	Room* corridor = new Room(*this, "Jail Corridor", "The corridor extends to the east and west. There are cells to the north and south.");
 
 	Room* other_cell = new Room(*this, "Empty Cell", "The cell is very similar to the other one. The bed is broken and a plank with nails rests on the ground.");
-	Item* broken_bed = new Item(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.");
-	new Item(*this, *broken_bed, "Board With Nails", "This board broke off from the broken bed.");
+	Item* broken_bed = new Item(*this, *other_cell, ItemType::Furniture, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.");
+	Item* board_with_nails = new Item(*this, *broken_bed, ItemType::Object, "Board With Nails", "This board broke off from the broken bed.");
 
 	Room* arena_lounge = new Room(*this, "Arena Lounge", "You find yourself at the arena lounge. You can see the light coming from the arena.");
-	new Item(*this, *arena_lounge, "Banana Peel", "A banana peel.");
+	Item* banana_peel = new Item(*this, *arena_lounge, ItemType::Object, "Banana Peel", "A banana peel.");
 
 	Room* office = new Room(*this, "Office", "You are in your slavemaster Porcius' office. Porcius is distracted looking at some documents away from the door.");
-	Item* desk = new Item(*this, *office, "Desk", "A wooden desk. There are multiple drawers.");
-	new Item(*this, *desk, "Armory Key", "The key that opens the armory door.");
+	Item* desk = new Item(*this, *office, ItemType::Furniture, "Desk", "A wooden desk. There are multiple drawers.");
+	Item* armory_key = new Item(*this, *desk, ItemType::Object, "Armory Key", "The key that opens the armory door.");
 
 	Room* armory = new Room(*this, "Armory", "The armory is enormous. There are a lot of weapons to pick from.");
-	new Item(*this, *armory, "Sword", "Metal sword.");
-	new Item(*this, *armory, "Mace", "Metal mace.");
-	new Item(*this, *armory, "Spear", "Metal spear.");
-	new Item(*this, *armory, "Shield", "Metal shield.");
+	Item* sword = new Item(*this, *armory, ItemType::Object, "Sword", "Metal sword.");
+	Item* mace = new Item(*this, *armory, ItemType::Object, "Mace", "Metal mace.");
+	Item* spear = new Item(*this, *armory, ItemType::Object, "Spear", "Metal spear.");
+	Item* shield = new Item(*this, *armory, ItemType::Object, "Shield", "Metal shield.");
 
 	Room* arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
 
@@ -83,7 +83,9 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 		}
 		else if (tokens[0] == "examine")
 		{
-			if (player->Examine(tokens))
+			std::string name = JoinTokens(tokens, 1, tokens.size());
+
+			if (player->Examine(name))
 			{
 				return false;
 			}

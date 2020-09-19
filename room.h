@@ -8,7 +8,7 @@ class Exit;
 class Room : public Entity
 {
 public:
-	Room(World& world, std::string name, std::string description);
+	Room(World& world, const std::string& name, const std::string& description);
 
 	void Inspect() const override;
 
