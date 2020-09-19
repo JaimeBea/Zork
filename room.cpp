@@ -11,7 +11,7 @@ void Room::Inspect() const
 	if (!contains.empty())
 	{
 		std::cout << "Contains:\n";
-		for (Entity* entity : contains)
+		for (const Entity* const entity : contains)
 		{
 			if (entity->entity_type == EntityType::Exit) continue;
 
@@ -20,12 +20,12 @@ void Room::Inspect() const
 		std::cout << "\n";
 
 		std::cout << "Exits:\n";
-		for (Entity* entity : contains)
+		for (const Entity* const entity : contains)
 		{
 			if (entity->entity_type != EntityType::Exit) continue;
-			const Exit* exit = (Exit*)entity;
+			const Exit* const exit = dynamic_cast<const Exit*>(entity);
 
-			Direction exit_direction = &exit->origin == this ? exit->direction : GetOppositeDirection(exit->direction);
+			const Direction exit_direction = exit->origin == this ? exit->direction : GetOppositeDirection(exit->direction);
 			std::cout << "  (" << GetDirectionName(exit_direction) << ") " << exit->name << "\n";
 		}
 		std::cout << "\n";
@@ -34,16 +34,16 @@ void Room::Inspect() const
 
 Exit* Room::GetExit(Direction direction) const
 {
-	for (const Entity* entity : contains)
+	for (Entity* const entity : contains)
 	{
 		if (entity->entity_type == EntityType::Exit)
 		{
-			Exit* exit = (Exit*) entity;
-			if (&exit->origin == this && exit->direction == direction)
+			Exit* const exit = dynamic_cast<Exit*>(entity);
+			if (exit->origin == this && exit->direction == direction)
 			{
 				return exit;
 			}
-			else if (&exit->destination == this && GetOppositeDirection(exit->direction) == direction)
+			else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
 			{
 				return exit;
 			}
@@ -55,18 +55,18 @@ Exit* Room::GetExit(Direction direction) const
 
 Room* Room::GetExitRoom(Direction direction) const
 {
-	for (const Entity* entity : contains)
+	for (Entity* const entity : contains)
 	{
 		if (entity->entity_type == EntityType::Exit)
 		{
-			Exit* exit = (Exit*)entity;
-			if (&exit->origin == this && exit->direction == direction)
+			Exit* const exit = dynamic_cast<Exit*>(entity);
+			if (exit->origin == this && exit->direction == direction)
 			{
-				return &exit->destination;
+				return exit->destination;
 			}
-			else if (&exit->destination == this && GetOppositeDirection(exit->direction) == direction)
+			else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
 			{
-				return &exit->origin;
+				return exit->origin;
 			}
 		}
 	}

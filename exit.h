@@ -13,7 +13,7 @@ public:
 
 	void Inspect() const override;
 
-	Room& origin;
-	Room& destination;
-	Direction direction;
+	Room* const origin;
+	Room* const destination;
+	const Direction direction;
 };

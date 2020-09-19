@@ -20,7 +20,7 @@ public:
 
 	virtual void Inspect() const;
 
-	World& world;
+	World* const world;
 	EntityType entity_type;
 	std::string name;
 	std::string description;

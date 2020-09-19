@@ -10,3 +10,21 @@ Creature::~Creature()
 {
 	location->contains.remove(this);
 }
+
+void Creature::Inspect() const
+{
+	std::cout << name << ":\n";
+	std::cout << description << "\n\n";
+
+	if (!contains.empty())
+	{
+		std::cout << "Inventory:\n";
+		for (const Entity* const entity : contains)
+		{
+			if (entity->entity_type == EntityType::Exit) continue;
+
+			std::cout << "  " << entity->name << "\n";
+		}
+		std::cout << "\n";
+	}
+}

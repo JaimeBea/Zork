@@ -16,6 +16,8 @@ public:
 
 	void Inspect() const override;
 
+	void ChangeParent(Entity& new_parent);
+
 	Entity* parent;
 	ItemType item_type;
 };

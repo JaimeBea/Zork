@@ -18,7 +18,7 @@ void Item::Inspect() const
 	if (!contains.empty())
 	{
 		std::cout << "Contains:\n";
-		for (Entity* entity : contains)
+		for (const Entity* const entity : contains)
 		{
 			if (entity->entity_type == EntityType::Exit) continue;
 
@@ -26,4 +26,11 @@ void Item::Inspect() const
 		}
 		std::cout << "\n";
 	}
+}
+
+void Item::ChangeParent(Entity& new_parent)
+{
+	parent->contains.remove(this);
+	new_parent.contains.push_back(this);
+	parent = &new_parent;
 }
