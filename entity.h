@@ -6,7 +6,8 @@ enum class EntityType
 {
 	Room,
 	Exit,
-	Player
+	Player,
+	Item
 };
 
 class World;

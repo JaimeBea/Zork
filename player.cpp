@@ -8,7 +8,7 @@ Player::Player(World& world, std::string name, std::string description, Room& lo
 }
 
 // 'entity_name_tokens' is used as an auxiliary container. It will be cleared on every call.
-bool ExamineCheckEntityName(const std::vector<std::string>& tokens, Entity& entity, std::vector<std::string>& entity_name_tokens)
+bool CompareEntityNameWithTokens(const std::vector<std::string>& tokens, Entity& entity, std::vector<std::string>& entity_name_tokens)
 {
 	Tokenize(entity.name, entity_name_tokens);
 	if (entity_name_tokens.size() != tokens.size() - 1) return false;
@@ -18,6 +18,25 @@ bool ExamineCheckEntityName(const std::vector<std::string>& tokens, Entity& enti
 	}
 
 	return true;
+}
+
+bool RecursivelySearchEntities(const std::vector<std::string>& tokens, const std::list<Entity*>& entities, std::vector<std::string>& entity_name_tokens)
+{
+	for (Entity* entity : entities)
+	{
+		if (CompareEntityNameWithTokens(tokens, *entity, entity_name_tokens))
+		{
+			entity->Inspect();
+			return true;
+		}
+
+		if (RecursivelySearchEntities(tokens, entity->contains, entity_name_tokens))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Player::Examine(const std::vector<std::string>& tokens)
@@ -31,13 +50,9 @@ bool Player::Examine(const std::vector<std::string>& tokens)
 	{
 		std::vector<std::string> entity_name_tokens;
 
-		for (Entity* entity : location->contains)
+		if (RecursivelySearchEntities(tokens, location->contains, entity_name_tokens))
 		{
-			if (ExamineCheckEntityName(tokens, *entity, entity_name_tokens))
-			{
-				entity->Inspect();
-				return true;
-			}
+			return true;
 		}
 	}
 
