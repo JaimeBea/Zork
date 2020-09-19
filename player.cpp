@@ -86,12 +86,12 @@ bool Player::Take(const std::string& name)
 			{
 				item->ChangeParent(*this);
 
-				std::cout << "You take the '" << item->name << "'.\n\n";
+				std::cout << "You take '" << item->name << "'.\n\n";
 				return true;
 			}
 			else
 			{
-				std::cout << "The '" << item->name << "' is too big to be picked up.\n\n";
+				std::cout << "You can't pick up '" << item->name << "'.\n\n";
 				return false;
 			}
 		}
@@ -102,5 +102,82 @@ bool Player::Take(const std::string& name)
 		}
 	}
 
+	std::cout << "The thing you tried to take doesn't exist.\n\n";
 	return false;
+}
+
+bool Player::Drop(const std::string& name)
+{
+	Entity* const entity = RecursivelySearchEntity(contains, name);
+	if (entity != nullptr)
+	{
+		if (entity->entity_type == EntityType::Item)
+		{
+			Item* item = dynamic_cast<Item*>(entity);
+			if (item->item_type == ItemType::Object)
+			{
+				item->ChangeParent(*location);
+
+				std::cout << "You drop '" << item->name << "'.\n\n";
+				return true;
+			}
+			else
+			{
+				std::cout << "You can't drop '" << item->name << "'.\n\n";
+				return false;
+			}
+		}
+		else
+		{
+			std::cout << "You can't drop '" << entity->name << "'.\n\n";
+			return false;
+		}
+	}
+
+	std::cout << "The thing you tried to drop doesn't exist.\n\n";
+	return false;
+}
+
+bool Player::Put(const std::string & name, const std::string & container_name)
+{
+	Item* item = nullptr;
+	Entity* const entity = RecursivelySearchEntity(contains, name);
+	if (entity != nullptr)
+	{
+		if (entity->entity_type == EntityType::Item)
+		{
+			item = dynamic_cast<Item*>(entity);
+			if (item->item_type != ItemType::Object)
+			{
+				std::cout << "You can't drop '" << item->name << "'.\n\n";
+				return false;
+			}
+		}
+		else
+		{
+			std::cout << "You can't drop '" << entity->name << "'.\n\n";
+			return false;
+		}
+	}
+	else
+	{
+		std::cout << "The thing you tried to drop doesn't exist.\n\n";
+		return false;
+	}
+
+	// 'item' will always be set by this point
+
+	Entity* const container_entity = RecursivelySearchEntity(location->contains, container_name);
+	if (container_entity != nullptr)
+	{
+		item->ChangeParent(*container_entity);
+
+		std::cout << "You put '" << item->name << "' in '" << container_entity->name << "'.\n\n";
+		return true;
+	}
+	else
+	{
+		std::cout << "The object you tried to place the item in doesn't exist.\n\n";
+		return false;
+	}
 }

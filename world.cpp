@@ -10,7 +10,8 @@ World::World()
 
 	Room* const cell = new Room(*this, "Player Cell", "You find yourself inside a very small cell. There is a bed tucked in the corner.");
 	Item* const player_bed = new Item(*this, *cell, ItemType::Furniture, "Bed", "Your bed. It's a simple wooden bed with very little padding.");
-	Item* const letter = new Item(*this, *player_bed, ItemType::Object, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor");
+	Item* const envelope = new Item(*this, *player_bed, ItemType::Object, "Envelope", "A letter envelope.");
+	Item* const letter = new Item(*this, *envelope, ItemType::Object, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor");
 
 	Room* const corridor = new Room(*this, "Jail Corridor", "The corridor extends to the east and west. There are cells to the north and south.");
 
@@ -72,6 +73,8 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			std::cout << "  examine [object] - Examine something. If written with no arguments it examines the current room.\n";
 			std::cout << "  go <direction> - Move towards a direction.\n";
 			std::cout << "  take <object> - Picks up an item.\n";
+			std::cout << "  drop <object> - Drops an item.\n";
+			std::cout << "  put <object> in <object> - Puts an item inside an object.\n";
 			std::cout << "\n";
 			std::cout << "Objects:\n";
 			std::cout << "  Everything inside the room or inside the objects of the room counts as an object.\n";
@@ -114,7 +117,47 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			}
 			else
 			{
-				std::cout << "The thing you tried to take doesn't exist.\n\n";
+				return false;
+			}
+		}
+		else if (tokens[0] == "drop")
+		{
+			const std::string name = JoinTokens(tokens, 1, tokens.size());
+
+			if (player->Drop(name))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (tokens[0] == "put")
+		{
+			int in_location = -1;
+			for (int i = 1; i < tokens.size(); i++)
+			{
+				if (tokens[i] == "in")
+				{
+					in_location = i;
+				}
+			}
+			if (in_location == -1)
+			{
+				std::cout << "You have to specify where to put the given item.\n\n";
+				return false;
+			}
+
+			const std::string name = JoinTokens(tokens, 1, in_location);
+			const std::string container_name = JoinTokens(tokens, in_location + 1, tokens.size());
+
+			if (player->Put(name, container_name))
+			{
+				return true;
+			}
+			else
+			{
 				return false;
 			}
 		}
