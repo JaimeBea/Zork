@@ -1,6 +1,6 @@
 #include "item.h"
 
-Item::Item(World& world, Entity& parent, ItemType item_type, const std::string& name, const std::string& description) : Entity(world, EntityType::Item, name, description), parent(&parent), item_type(item_type)
+Item::Item(World& world, Entity& parent, const std::string& name, const std::string& description, bool is_container, bool is_big, bool is_attached) : Entity(world, EntityType::Item, name, description), parent(&parent), is_container(is_container), is_big(is_big), is_attached(is_attached)
 {
 	parent.contains.push_back(this);
 }

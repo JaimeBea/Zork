@@ -2,16 +2,10 @@
 
 #include "entity.h"
 
-enum class ItemType
-{
-	Object,
-	Furniture
-};
-
 class Item : public Entity
 {
 public:
-	Item(World& world, Entity& parent, ItemType item_type, const std::string& name, const std::string& description);
+	Item(World& world, Entity& parent, const std::string& name, const std::string& description, bool is_container, bool is_big, bool is_attached);
 	~Item();
 
 	void Inspect() const override;
@@ -19,5 +13,7 @@ public:
 	void ChangeParent(Entity& new_parent);
 
 	Entity* parent;
-	ItemType item_type;
+	bool is_container;
+	bool is_big;
+	bool is_attached;
 };

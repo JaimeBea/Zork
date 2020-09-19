@@ -26,4 +26,3 @@ public:
 	std::string description;
 	std::list<Entity*> contains;
 };
-

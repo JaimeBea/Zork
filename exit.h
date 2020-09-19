@@ -4,6 +4,7 @@
 #include "entity.h"
 
 class Room;
+class Item;
 
 class Exit : public Entity
 {

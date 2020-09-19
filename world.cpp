@@ -9,28 +9,28 @@ World::World()
 	// Rooms
 
 	Room* const cell = new Room(*this, "Player Cell", "You find yourself inside a very small cell. There is a bed tucked in the corner.");
-	Item* const player_bed = new Item(*this, *cell, ItemType::Furniture, "Bed", "Your bed. It's a simple wooden bed with very little padding.");
-	Item* const envelope = new Item(*this, *player_bed, ItemType::Object, "Envelope", "A letter envelope.");
-	Item* const letter = new Item(*this, *envelope, ItemType::Object, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor");
+	Item* const player_bed = new Item(*this, *cell, "Bed", "Your bed. It's a simple wooden bed with very little padding.", true, true, false);
+	Item* const envelope = new Item(*this, *player_bed, "Envelope", "A letter envelope.", true, false, false);
+	Item* const letter = new Item(*this, *envelope, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor", false, false, false);
 
 	Room* const corridor = new Room(*this, "Jail Corridor", "The corridor extends to the east and west. There are cells to the north and south.");
 
 	Room* const other_cell = new Room(*this, "Empty Cell", "The cell is very similar to the other one. The bed is broken and a plank with nails rests on the ground.");
-	Item* const broken_bed = new Item(*this, *other_cell, ItemType::Furniture, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.");
-	Item* const board_with_nails = new Item(*this, *broken_bed, ItemType::Object, "Board With Nails", "This board broke off from the broken bed.");
+	Item* const broken_bed = new Item(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", true, true, false);
+	Item* const board_with_nails = new Item(*this, *broken_bed, "Board With Nails", "This board broke off from the broken bed.", false, false, false);
 
 	Room* const arena_lounge = new Room(*this, "Arena Lounge", "You find yourself at the arena lounge. You can see the light coming from the arena.");
-	Item* const banana_peel = new Item(*this, *arena_lounge, ItemType::Object, "Banana Peel", "A banana peel.");
+	Item* const banana_peel = new Item(*this, *arena_lounge, "Banana Peel", "A banana peel.", false, false, false);
 
 	Room* const office = new Room(*this, "Office", "You are in your slavemaster Porcius' office. Porcius is distracted looking at some documents away from the door.");
-	Item* const desk = new Item(*this, *office, ItemType::Furniture, "Desk", "A wooden desk. There are multiple drawers.");
-	Item* const armory_key = new Item(*this, *desk, ItemType::Object, "Armory Key", "The key that opens the armory door.");
+	Item* const desk = new Item(*this, *office, "Desk", "A wooden desk. There are multiple drawers.", true, true, false);
+	Item* const armory_key = new Item(*this, *desk, "Armory Key", "The key that opens the armory door.", false, false, false);
 
 	Room* const armory = new Room(*this, "Armory", "The armory is enormous. There are a lot of weapons to pick from.");
-	Item* const sword = new Item(*this, *armory, ItemType::Object, "Sword", "Metal sword.");
-	Item* const mace = new Item(*this, *armory, ItemType::Object, "Mace", "Metal mace.");
-	Item* const spear = new Item(*this, *armory, ItemType::Object, "Spear", "Metal spear.");
-	Item* const shield = new Item(*this, *armory, ItemType::Object, "Shield", "Metal shield.");
+	Item* const sword = new Item(*this, *armory, "Sword", "Metal sword.", false, false, false);
+	Item* const mace = new Item(*this, *armory, "Mace", "Metal mace.", false, false, false);
+	Item* const spear = new Item(*this, *armory, "Spear", "Metal spear.", false, false, false);
+	Item* const shield = new Item(*this, *armory, "Shield", "Metal shield.", false, false, false);
 
 	Room* const arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
 
@@ -46,6 +46,12 @@ World::World()
 	// Player
 
 	player = new Player(*this, "Player", "You look fine.", *cell);
+	Item* const player_right_eye = new Item(*this, *player, "Player Right Eye", "Your right eye.", false, false, true);
+	Item* const player_left_eye = new Item(*this, *player, "Player Left Eye", "Your left eye.", false, false, true);
+	Item* const player_right_arm = new Item(*this, *player, "Player Right Arm", "Your right arm.", true, false, true);
+	Item* const player_left_arm = new Item(*this, *player, "Player Left Arm", "Your left arm.", true, false, true);
+	Item* const player_right_leg = new Item(*this, *player, "Player Right Leg", "Your right leg.", false, false, true);
+	Item* const player_left_leg = new Item(*this, *player, "Player Left Leg", "Your left leg.", false, false, true);
 }
 
 World::~World()
