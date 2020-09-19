@@ -3,9 +3,27 @@
 #include "exit.h"
 #include "item.h"
 
-Player::Player(World& world, const std::string& name, const std::string& description, Room& location) : Creature(world, EntityType::Player, name, description, location)
+Player::Player(World& world, Room& location, const std::string& name, const std::string& description) : Creature(world, location, EntityType::Player, name, description)
 {
 	location.Inspect();
+}
+
+bool CheckIsBodyPartEmpty(const Item& body_part)
+{
+	for (const Entity* const entity : body_part.contains)
+	{
+		if (entity->entity_type != EntityType::Item) continue;
+
+		const Item* const item = dynamic_cast<const Item*>(entity);
+
+		if (!item->is_attached)
+		{
+			// We found an item that's not a body part
+			return false;
+		}
+	}
+
+	return true;
 }
 
 Entity* RecursivelySearchEntity(const std::list<Entity*>& entities, const std::string& name)
@@ -21,6 +39,37 @@ Entity* RecursivelySearchEntity(const std::list<Entity*>& entities, const std::s
 		if (child_entity != nullptr)
 		{
 			return child_entity;
+		}
+	}
+
+	return nullptr;
+}
+
+Item* RecursivelySearchEmptyBodyPart(const Entity& parent)
+{
+	for (Entity* const entity : parent.contains)
+	{
+		if (entity->entity_type != EntityType::Item) continue;
+
+		Item* const item = dynamic_cast<Item*>(entity);
+
+		if (item->is_attached)
+		{
+			if (item->is_container)
+			{
+				if (CheckIsBodyPartEmpty(*item))
+				{
+					return item;
+				}
+			}
+			else
+			{
+				Item* const found_empty_body_part = RecursivelySearchEmptyBodyPart(*item);
+				if (found_empty_body_part != nullptr)
+				{
+					return found_empty_body_part;
+				}
+			}
 		}
 	}
 
@@ -88,22 +137,10 @@ bool Player::Take(const std::string& name)
 			Item* const item = dynamic_cast<Item*>(entity);
 			if (!item->is_attached)
 			{
-				// Search for an empty body part to put the item in
-				Item* empty_body_part = nullptr;
-				for (Entity* const entity : contains)
-				{
-					if (entity->entity_type != EntityType::Item) continue;
-
-					Item* const body_part = dynamic_cast<Item*>(entity);
-					if (body_part->is_container && body_part->contains.empty())
-					{
-						empty_body_part = body_part;
-					}
-				}
-
-				// Put the item in the found body part
+				Item* const empty_body_part = RecursivelySearchEmptyBodyPart(*this);
 				if (empty_body_part != nullptr)
 				{
+					// Empty body part found
 					item->ChangeParent(*empty_body_part);
 
 					std::cout << "You take '" << item->name << "'.\n\n";
@@ -111,6 +148,7 @@ bool Player::Take(const std::string& name)
 				}
 				else
 				{
+					// No empty body part found
 					std::cout << "You have no empty hands.\n\n";
 					return false;
 				}
@@ -218,34 +256,34 @@ bool Player::Put(const std::string & name, const std::string & container_name)
 			{
 				if (container_item->is_attached)
 				{
-					if (container_entity->contains.empty())
+					if (CheckIsBodyPartEmpty(*container_item))
 					{
 						// Empty body part
-						selected_item->ChangeParent(*container_entity);
+						selected_item->ChangeParent(*container_item);
 
-						std::cout << "You put '" << selected_item->name << "' in '" << container_entity->name << "'.\n\n";
+						std::cout << "You put '" << selected_item->name << "' in '" << container_item->name << "'.\n\n";
 						return true;
 					}
 					else
 					{
 						// Full body part
-						std::cout << "You can't put '" << selected_item->name << "' in '" << container_entity->name << "'.\n\n";
+						std::cout << "You can't put '" << selected_item->name << "' in '" << container_item->name << "'.\n\n";
 						return false;
 					}
 				}
 				else
 				{
 					// Normal container
-					selected_item->ChangeParent(*container_entity);
+					selected_item->ChangeParent(*container_item);
 
-					std::cout << "You put '" << selected_item->name << "' in '" << container_entity->name << "'.\n\n";
+					std::cout << "You put '" << selected_item->name << "' in '" << container_item->name << "'.\n\n";
 					return true;
 				}
 			}
 			else
 			{
 				// Not a container
-				std::cout << "You can't put '" << selected_item->name << "' in '" << container_entity->name << "'.\n\n";
+				std::cout << "You can't put '" << selected_item->name << "' in '" << container_item->name << "'.\n\n";
 				return false;
 			}
 		}

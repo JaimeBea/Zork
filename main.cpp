@@ -29,8 +29,6 @@ int main()
 		std::getline(std::cin, player_input);
 		Tokenize(player_input, tokens);
 
-		std::cout << "\n"; // Double new line for easier reading
-
 		if (player_input == "quit") break;
 
 		world.Tick(tokens);

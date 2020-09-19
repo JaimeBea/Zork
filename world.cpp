@@ -2,6 +2,7 @@
 #include "room.h"
 #include "exit.h"
 #include "player.h"
+#include "npc.h"
 #include "item.h"
 
 World::World()
@@ -17,12 +18,26 @@ World::World()
 
 	Room* const other_cell = new Room(*this, "Empty Cell", "The cell is very similar to the other one. The bed is broken and a plank with nails rests on the ground.");
 	Item* const broken_bed = new Item(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", true, true, false);
-	Item* const board_with_nails = new Item(*this, *broken_bed, "Board With Nails", "This board broke off from the broken bed.", false, false, false);
+	Item* const board = new Item(*this, *broken_bed, "Board", "This board broke off from the broken bed.", false, false, false);
 
 	Room* const arena_lounge = new Room(*this, "Arena Lounge", "You find yourself at the arena lounge. You can see the light coming from the arena.");
 	Item* const banana_peel = new Item(*this, *arena_lounge, "Banana Peel", "A banana peel.", false, false, false);
 
 	Room* const office = new Room(*this, "Office", "You are in your slavemaster Porcius' office. Porcius is distracted looking at some documents away from the door.");
+	NPC* const porcius = new NPC(*this, *office, "Porcius", "Your slavemaster is extremely fat and ugly. His face resembles a pig.");
+	Item* const porcius_head = new Item(*this, *porcius, "Porcius Head", "Porcius' head.", false, false, true);
+	Item* const porcius_right_eye = new Item(*this, *porcius_head, "Porcius Right Eye", "Porcius' right eye.", false, false, true);
+	Item* const porcius_left_eye = new Item(*this, *porcius_head, "Porcius Left Eye", "Porcius' left eye.", false, false, true);
+	Item* const porcius_right_arm = new Item(*this, *porcius, "Porcius Right Arm", "Porcius' right arm.", false, false, true);
+	Item* const porcius_right_hand = new Item(*this, *porcius_right_arm, "Porcius Right Hand", "Porcius' right hand.", true, false, true);
+	Item* const porcius_left_arm = new Item(*this, *porcius, "Porcius Left Arm", "Porcius' left arm.", false, false, true);
+	Item* const porcius_left_hand = new Item(*this, *porcius_left_arm, "Porcius Left Hand", "Porcius' left hand.", true, false, true);
+	Item* const porcius_right_leg = new Item(*this, *porcius, "Porcius Right Leg", "Porcius' right leg.", false, false, true);
+	Item* const porcius_right_foot = new Item(*this, *porcius_right_leg, "Porcius Right Foot", "Porcius' right foot.", false, false, true);
+	Item* const porcius_left_leg = new Item(*this, *porcius, "Porcius Left Leg", "Porcius' left leg.", false, false, true);
+	Item* const porcius_left_foot = new Item(*this, *porcius_left_leg, "Porcius Left Foot", "Porcius' left foot.", false, false, true);
+	Item* const dagger = new Item(*this, *porcius_right_arm, "Dagger", "Porcius' dagger. It's decorated with gems of multiple colors.", false, false, false);
+	Item* const desk_key = new Item(*this, *porcius_right_leg, "Desk Key", "It opens the desk in Porcius' office.", false, false, false);
 	Item* const desk = new Item(*this, *office, "Desk", "A wooden desk. There are multiple drawers.", true, true, false);
 	Item* const armory_key = new Item(*this, *desk, "Armory Key", "The key that opens the armory door.", false, false, false);
 
@@ -33,6 +48,20 @@ World::World()
 	Item* const shield = new Item(*this, *armory, "Shield", "Metal shield.", false, false, false);
 
 	Room* const arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
+	NPC* const kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.");
+	Item* const kroz_head = new Item(*this, *kroz, "Kroz Head", "Kroz's head.", false, false, true);
+	Item* const kroz_right_eye = new Item(*this, *kroz_head, "Kroz Right Eye", "Kroz's right eye.", false, false, true);
+	Item* const kroz_left_eye = new Item(*this, *kroz_head, "Kroz Left Eye", "Kroz's left eye.", false, false, true);
+	Item* const kroz_right_arm = new Item(*this, *kroz, "Kroz Right Arm", "Kroz's right arm.", false, false, true);
+	Item* const kroz_right_hand = new Item(*this, *kroz_right_arm, "Kroz Right Hand", "Kroz's right hand.", true, false, true);
+	Item* const kroz_left_arm = new Item(*this, *kroz, "Kroz Left Arm", "Kroz's left arm.", false, false, true);
+	Item* const kroz_left_hand = new Item(*this, *kroz_left_arm, "Kroz Left Hand", "Kroz's left hand.", true, false, true);
+	Item* const kroz_right_leg = new Item(*this, *kroz, "Kroz Right Leg", "Kroz's right leg.", false, false, true);
+	Item* const kroz_right_foot = new Item(*this, *kroz_right_leg, "Kroz Right Foot", "Kroz's right foot.", false, false, true);
+	Item* const kroz_left_leg = new Item(*this, *kroz, "Kroz Left Leg", "Kroz's left leg.", false, false, true);
+	Item* const kroz_left_foot = new Item(*this, *kroz_left_leg, "Kroz Left Foot", "Kroz's left foot.", false, false, true);
+	Item* const axe = new Item(*this, *kroz_right_hand, "Axe", "Kroz's Axe. It's taller than you.", false, false, false);
+	Item* const morning_star = new Item(*this, *kroz_left_hand, "Morning Star", "Kroz's Morning Star. A huge metal mace with spikes.", false, false, false);
 
 	// Exits
 
@@ -45,13 +74,18 @@ World::World()
 
 	// Player
 
-	player = new Player(*this, "Player", "You look fine.", *cell);
-	Item* const player_right_eye = new Item(*this, *player, "Player Right Eye", "Your right eye.", false, false, true);
-	Item* const player_left_eye = new Item(*this, *player, "Player Left Eye", "Your left eye.", false, false, true);
-	Item* const player_right_arm = new Item(*this, *player, "Player Right Arm", "Your right arm.", true, false, true);
-	Item* const player_left_arm = new Item(*this, *player, "Player Left Arm", "Your left arm.", true, false, true);
+	player = new Player(*this, *cell, "Player", "You look fine.");
+	Item* const player_head = new Item(*this, *player, "Player Head", "Your head.", false, false, true);
+	Item* const player_right_eye = new Item(*this, *player_head, "Player Right Eye", "Your right eye.", false, false, true);
+	Item* const player_left_eye = new Item(*this, *player_head, "Player Left Eye", "Your left eye.", false, false, true);
+	Item* const player_right_arm = new Item(*this, *player, "Player Right Arm", "Your right arm.", false, false, true);
+	Item* const player_right_hand = new Item(*this, *player_right_arm, "Player Right Hand", "Your right hand.", true, false, true);
+	Item* const player_left_arm = new Item(*this, *player, "Player Left Arm", "Your left arm.", false, false, true);
+	Item* const player_left_hand = new Item(*this, *player_left_arm, "Player Left Hand", "Your left hand.", true, false, true);
 	Item* const player_right_leg = new Item(*this, *player, "Player Right Leg", "Your right leg.", false, false, true);
+	Item* const player_right_foot = new Item(*this, *player_right_leg, "Player Right Foot", "Your right foot.", false, false, true);
 	Item* const player_left_leg = new Item(*this, *player, "Player Left Leg", "Your left leg.", false, false, true);
+	Item* const player_left_foot = new Item(*this, *player_left_leg, "Player Left Foot", "Your left foot.", false, false, true);
 }
 
 World::~World()

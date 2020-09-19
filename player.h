@@ -8,7 +8,7 @@ class Room;
 class Player : public Creature
 {
 public:
-	Player(World& world, const std::string& name, const std::string& description, Room& location);
+	Player(World& world, Room& location, const std::string& name, const std::string& description);
 
 	bool Examine(const std::string& name) const;
 	bool Go(Direction direction);
