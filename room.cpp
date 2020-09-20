@@ -1,7 +1,8 @@
 #include "room.h"
 #include "exit.h"
 
-Room::Room(World& world, const std::string& name, const std::string& description) : Entity(world, EntityType::Room, name, description, -1, nullptr) {}
+Room::Room(World& world, const std::string& name, const std::string& description)
+	: Entity(world, EntityType::Room, name, description, -1, nullptr) {}
 
 void Room::Inspect() const
 {
@@ -35,17 +36,20 @@ Exit* Room::GetExit(Direction direction) const
 {
 	for (Entity* const entity : contains)
 	{
-		if (entity->entity_type == EntityType::Exit)
+		if (entity->entity_type != EntityType::Exit)
 		{
-			Exit* const exit = dynamic_cast<Exit*>(entity);
-			if (exit->origin == this && exit->direction == direction)
-			{
-				return exit;
-			}
-			else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
-			{
-				return exit;
-			}
+			// Not an exit
+			continue;
+		}
+
+		Exit* const exit = dynamic_cast<Exit*>(entity);
+		if (exit->origin == this && exit->direction == direction)
+		{
+			return exit;
+		}
+		else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
+		{
+			return exit;
 		}
 	}
 
@@ -56,17 +60,20 @@ Room* Room::GetExitRoom(Direction direction) const
 {
 	for (Entity* const entity : contains)
 	{
-		if (entity->entity_type == EntityType::Exit)
+		if (entity->entity_type != EntityType::Exit)
 		{
-			Exit* const exit = dynamic_cast<Exit*>(entity);
-			if (exit->origin == this && exit->direction == direction)
-			{
-				return exit->destination;
-			}
-			else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
-			{
-				return exit->origin;
-			}
+			// Not an exit
+			continue;
+		}
+
+		Exit* const exit = dynamic_cast<Exit*>(entity);
+		if (exit->origin == this && exit->direction == direction)
+		{
+			return exit->destination;
+		}
+		else if (exit->destination == this && GetOppositeDirection(exit->direction) == direction)
+		{
+			return exit->origin;
 		}
 	}
 

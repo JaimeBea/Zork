@@ -1,7 +1,22 @@
 #include "item.h"
 
-Item::Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container, const Item* key)
-	: Entity(world, type, name, description, health, key), parent(&parent), damage(damage), is_container(is_container)
+Item::Item
+(
+	World& world,
+	Entity& parent,
+	ItemType item_type,
+	const std::string& name,
+	const std::string& description,
+	int health,
+	int damage,
+	bool is_container,
+	const Item* key
+)
+	: Entity(world, EntityType::Item, name, description, health, key),
+	parent(&parent),
+	item_type(item_type),
+	damage(damage),
+	is_container(is_container)
 {
 	parent.contains.push_back(this);
 }

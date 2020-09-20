@@ -42,15 +42,6 @@
     <ClInclude Include="npc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="body_part.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="furniture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pickable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -81,15 +72,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="npc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pickable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="body_part.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="furniture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

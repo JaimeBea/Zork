@@ -3,67 +3,65 @@
 #include "exit.h"
 #include "player.h"
 #include "npc.h"
-#include "pickable.h"
-#include "furniture.h"
-#include "body_part.h"
+#include "item.h"
 
 World::World()
 {
 	// Rooms
 
 	Room* const cell = new Room(*this, "Player Cell", "You find yourself inside a very small cell. There is a bed tucked in the corner.");
-	Furniture* const player_bed = new Furniture(*this, *cell, "Bed", "Your bed. It's a simple wooden bed with very little padding.", 100, true, nullptr);
-	Pickable* const envelope = new Pickable(*this, *player_bed, "Envelope", "A letter envelope.", 100, 10, true, nullptr);
-	Pickable* const letter = new Pickable(*this, *envelope, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor", 100, 10, false, nullptr);
+	Item* const player_bed = new Item(*this, *cell, ItemType::Furniture, "Bed", "Your bed. It's a simple wooden bed with very little padding.", 100, 0, true, nullptr);
+	Item* const envelope = new Item(*this, *player_bed, ItemType::Pickable, "Envelope", "A letter envelope.", 100, 10, true, nullptr);
+	Item* const letter = new Item(*this, *envelope, ItemType::Pickable, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor", 100, 10, false, nullptr);
 
 	Room* const corridor = new Room(*this, "Jail Corridor", "The corridor extends to the east and west. There are cells to the north and south.");
 
 	Room* const other_cell = new Room(*this, "Empty Cell", "The cell is very similar to the other one. The bed is broken and a plank with nails rests on the ground.");
-	Furniture* const broken_bed = new Furniture(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", 100, true, nullptr);
-	Pickable* const board = new Pickable(*this, *broken_bed, "Board", "This board broke off from the broken bed.", 100, 10, false, nullptr);
+	Item* const broken_bed = new Item(*this, *other_cell, ItemType::Furniture, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", 100, 0, true, nullptr);
+	Item* const board = new Item(*this, *broken_bed, ItemType::Pickable, "Board", "This board broke off from the broken bed.", 100, 10, false, nullptr);
 
 	Room* const arena_lounge = new Room(*this, "Arena Lounge", "You find yourself at the arena lounge. You can see the light coming from the arena.");
-	Pickable* const banana_peel = new Pickable(*this, *arena_lounge, "Banana Peel", "A banana peel.", 100, 10, false, nullptr);
+	Item* const banana_peel = new Item(*this, *arena_lounge, ItemType::Pickable, "Banana Peel", "A banana peel.", 100, 10, false, nullptr);
 
 	Room* const office = new Room(*this, "Office", "You are in your slavemaster Porcius' office. Porcius is distracted looking at some documents away from the door.");
 	NPC* const porcius = new NPC(*this, *office, "Porcius", "Your slavemaster is extremely fat and ugly. His face resembles a pig.", 100);
-	BodyPart* const porcius_head = new BodyPart(*this, *porcius, "Porcius Head", "Porcius' head.", 100, 10, true, false);
-	BodyPart* const porcius_right_eye = new BodyPart(*this, *porcius_head, "Porcius Right Eye", "Porcius' right eye.", 100, 10, true, false);
-	BodyPart* const porcius_left_eye = new BodyPart(*this, *porcius_head, "Porcius Left Eye", "Porcius' left eye.", 100, 10, true, false);
-	BodyPart* const porcius_right_arm = new BodyPart(*this, *porcius, "Porcius Right Arm", "Porcius' right arm.", 100, 10, true, false);
-	BodyPart* const porcius_right_hand = new BodyPart(*this, *porcius_right_arm, "Porcius Right Hand", "Porcius' right hand.", 100, 10, true, true);
-	BodyPart* const porcius_left_arm = new BodyPart(*this, *porcius, "Porcius Left Arm", "Porcius' left arm.", 100, 10, true, false);
-	BodyPart* const porcius_left_hand = new BodyPart(*this, *porcius_left_arm, "Porcius Left Hand", "Porcius' left hand.", 100, 10, true, true);
-	BodyPart* const porcius_right_leg = new BodyPart(*this, *porcius, "Porcius Right Leg", "Porcius' right leg.", 100, 10, true, false);
-	BodyPart* const porcius_right_foot = new BodyPart(*this, *porcius_right_leg, "Porcius Right Foot", "Porcius' right foot.", 100, 10, true, false);
-	BodyPart* const porcius_left_leg = new BodyPart(*this, *porcius, "Porcius Left Leg", "Porcius' left leg.", 100, 10, true, false);
-	BodyPart* const porcius_left_foot = new BodyPart(*this, *porcius_left_leg, "Porcius Left Foot", "Porcius' left foot.", 100, 10, true, false);
-	Pickable* const dagger = new Pickable(*this, *porcius_right_arm, "Dagger", "Porcius' dagger. It's decorated with gems of multiple colors.", 100, 10, false, nullptr);
-	Pickable* const desk_key = new Pickable(*this, *porcius_right_leg, "Desk Key", "It opens the desk in Porcius' office.", 100, 10, false, nullptr);
-	Furniture* const desk = new Furniture(*this, *office, "Desk", "A wooden desk. There are multiple drawers.", 100, true, desk_key);
-	Pickable* const armory_key = new Pickable(*this, *desk, "Armory Key", "The key that opens the armory door.", 100, 10, false, nullptr);
+	Item* const porcius_head = new Item(*this, *porcius, ItemType::BodyPart, "Porcius Head", "Porcius' head.", 100, 10, false, nullptr);
+	Item* const porcius_right_eye = new Item(*this, *porcius_head, ItemType::BodyPart, "Porcius Right Eye", "Porcius' right eye.", 100, 10, false, nullptr);
+	Item* const porcius_left_eye = new Item(*this, *porcius_head, ItemType::BodyPart, "Porcius Left Eye", "Porcius' left eye.", 100, 10, false, nullptr);
+	Item* const porcius_right_arm = new Item(*this, *porcius, ItemType::BodyPart, "Porcius Right Arm", "Porcius' right arm.", 100, 10, false, nullptr);
+	Item* const porcius_right_hand = new Item(*this, *porcius_right_arm, ItemType::BodyPart, "Porcius Right Hand", "Porcius' right hand.", 100, 10, true, nullptr);
+	Item* const porcius_left_arm = new Item(*this, *porcius, ItemType::BodyPart, "Porcius Left Arm", "Porcius' left arm.", 100, 10, false, nullptr);
+	Item* const porcius_left_hand = new Item(*this, *porcius_left_arm, ItemType::BodyPart, "Porcius Left Hand", "Porcius' left hand.", 100, 10, true, nullptr);
+	Item* const porcius_right_leg = new Item(*this, *porcius, ItemType::BodyPart, "Porcius Right Leg", "Porcius' right leg.", 100, 10, false, nullptr);
+	Item* const porcius_right_foot = new Item(*this, *porcius_right_leg, ItemType::BodyPart, "Porcius Right Foot", "Porcius' right foot.", 100, 10, false, nullptr);
+	Item* const porcius_left_leg = new Item(*this, *porcius, ItemType::BodyPart, "Porcius Left Leg", "Porcius' left leg.", 100, 10, false, nullptr);
+	Item* const porcius_left_foot = new Item(*this, *porcius_left_leg, ItemType::BodyPart, "Porcius Left Foot", "Porcius' left foot.", 100, 10, false, nullptr);
+	Item* const dagger = new Item(*this, *porcius_right_arm, ItemType::Pickable, "Dagger", "Porcius' dagger. It's decorated with gems of multiple colors.", 100, 10, false, nullptr);
+	Item* const desk_key = new Item(*this, *porcius_right_leg, ItemType::Pickable, "Desk Key", "It opens the desk in Porcius' office.", 100, 10, false, nullptr);
+	Item* const desk = new Item(*this, *office, ItemType::Furniture, "Desk", "A wooden desk. There are multiple drawers.", 100, 0, true, desk_key);
+	Item* const armory_key = new Item(*this, *desk, ItemType::Pickable, "Armory Key", "The key that opens the armory door.", 100, 10, false, nullptr);
 
 	Room* const armory = new Room(*this, "Armory", "The armory is enormous. There are a lot of weapons to pick from.");
-	Pickable* const sword = new Pickable(*this, *armory, "Sword", "Metal sword.", 100, 10, false, nullptr);
-	Pickable* const mace = new Pickable(*this, *armory, "Mace", "Metal mace.", 100, 10, false, nullptr);
-	Pickable* const spear = new Pickable(*this, *armory, "Spear", "Metal spear.", 100, 10, false, nullptr);
-	Pickable* const shield = new Pickable(*this, *armory, "Shield", "Metal shield.", 100, 10, false, nullptr);
+	Item* const sword = new Item(*this, *armory, ItemType::Pickable, "Sword", "Metal sword.", 100, 10, false, nullptr);
+	Item* const mace = new Item(*this, *armory, ItemType::Pickable, "Mace", "Metal mace.", 100, 10, false, nullptr);
+	Item* const spear = new Item(*this, *armory, ItemType::Pickable, "Spear", "Metal spear.", 100, 10, false, nullptr);
+	Item* const shield = new Item(*this, *armory, ItemType::Pickable, "Shield", "Metal shield.", 100, 10, false, nullptr);
 
 	Room* const arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
 	NPC* const kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.", 100);
-	BodyPart* const kroz_head = new BodyPart(*this, *kroz, "Kroz Head", "Kroz's head.", 100, 10, true, false);
-	BodyPart* const kroz_right_eye = new BodyPart(*this, *kroz_head, "Kroz Right Eye", "Kroz's right eye.", 100, 10, true, false);
-	BodyPart* const kroz_left_eye = new BodyPart(*this, *kroz_head, "Kroz Left Eye", "Kroz's left eye.", 100, 10, true, false);
-	BodyPart* const kroz_right_arm = new BodyPart(*this, *kroz, "Kroz Right Arm", "Kroz's right arm.", 100, 10, true, false);
-	BodyPart* const kroz_right_hand = new BodyPart(*this, *kroz_right_arm, "Kroz Right Hand", "Kroz's right hand.", 100, 10, true, true);
-	BodyPart* const kroz_left_arm = new BodyPart(*this, *kroz, "Kroz Left Arm", "Kroz's left arm.", 100, 10, true, false);
-	BodyPart* const kroz_left_hand = new BodyPart(*this, *kroz_left_arm, "Kroz Left Hand", "Kroz's left hand.", 100, 10, true, true);
-	BodyPart* const kroz_right_leg = new BodyPart(*this, *kroz, "Kroz Right Leg", "Kroz's right leg.", 100, 10, true, false);
-	BodyPart* const kroz_right_foot = new BodyPart(*this, *kroz_right_leg, "Kroz Right Foot", "Kroz's right foot.", 100, 10, true, false);
-	BodyPart* const kroz_left_leg = new BodyPart(*this, *kroz, "Kroz Left Leg", "Kroz's left leg.", 100, 10, true, false);
-	BodyPart* const kroz_left_foot = new BodyPart(*this, *kroz_left_leg, "Kroz Left Foot", "Kroz's left foot.", 100, 10, true, false);
-	Pickable* const axe = new Pickable(*this, *kroz_right_hand, "Axe", "Kroz's Axe. It's taller than you.", 100, 10, false, nullptr);
-	Pickable* const morning_star = new Pickable(*this, *kroz_left_hand, "Morning Star", "Kroz's Morning Star. A huge metal mace with spikes.", 100, 10, false, nullptr);
+	Item* const kroz_head = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Head", "Kroz's head.", 100, 10, false, nullptr);
+	Item* const kroz_right_eye = new Item(*this, *kroz_head, ItemType::BodyPart, "Kroz Right Eye", "Kroz's right eye.", 100, 10, false, nullptr);
+	Item* const kroz_left_eye = new Item(*this, *kroz_head, ItemType::BodyPart, "Kroz Left Eye", "Kroz's left eye.", 100, 10, false, nullptr);
+	Item* const kroz_right_arm = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Right Arm", "Kroz's right arm.", 100, 10, false, nullptr);
+	Item* const kroz_right_hand = new Item(*this, *kroz_right_arm, ItemType::BodyPart, "Kroz Right Hand", "Kroz's right hand.", 100, 10, true, nullptr);
+	Item* const kroz_left_arm = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Left Arm", "Kroz's left arm.", 100, 10, false, nullptr);
+	Item* const kroz_left_hand = new Item(*this, *kroz_left_arm, ItemType::BodyPart, "Kroz Left Hand", "Kroz's left hand.", 100, 10, true, nullptr);
+	Item* const kroz_right_leg = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Right Leg", "Kroz's right leg.", 100, 10, false, nullptr);
+	Item* const kroz_right_foot = new Item(*this, *kroz_right_leg, ItemType::BodyPart, "Kroz Right Foot", "Kroz's right foot.", 100, 10, false, nullptr);
+	Item* const kroz_left_leg = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Left Leg", "Kroz's left leg.", 100, 10, false, nullptr);
+	Item* const kroz_left_foot = new Item(*this, *kroz_left_leg, ItemType::BodyPart, "Kroz Left Foot", "Kroz's left foot.", 100, 10, false, nullptr);
+	Item* const axe = new Item(*this, *kroz_right_hand, ItemType::Pickable, "Axe", "Kroz's Axe. It's taller than you.", 100, 10, false, nullptr);
+	Item* const morning_star = new Item(*this, *kroz_left_hand, ItemType::Pickable, "Morning Star", "Kroz's Morning Star. A huge metal mace with spikes.", 100, 10, false, nullptr);
 
 	// Exits
 
@@ -77,17 +75,17 @@ World::World()
 	// Player
 
 	player = new Player(*this, *cell, "Player", "You look fine.", 100);
-	BodyPart* const player_head = new BodyPart(*this, *player, "Player Head", "Your head.", 100, 10, true, false);
-	BodyPart* const player_right_eye = new BodyPart(*this, *player_head, "Player Right Eye", "Your right eye.", 100, 10, true, false);
-	BodyPart* const player_left_eye = new BodyPart(*this, *player_head, "Player Left Eye", "Your left eye.", 100, 10, true, false);
-	BodyPart* const player_right_arm = new BodyPart(*this, *player, "Player Right Arm", "Your right arm.", 100, 10, true, false);
-	BodyPart* const player_right_hand = new BodyPart(*this, *player_right_arm, "Player Right Hand", "Your right hand.", 100, 10, true, true);
-	BodyPart* const player_left_arm = new BodyPart(*this, *player, "Player Left Arm", "Your left arm.", 100, 10, true, false);
-	BodyPart* const player_left_hand = new BodyPart(*this, *player_left_arm, "Player Left Hand", "Your left hand.", 100, 10, true, true);
-	BodyPart* const player_right_leg = new BodyPart(*this, *player, "Player Right Leg", "Your right leg.", 100, 10, true, false);
-	BodyPart* const player_right_foot = new BodyPart(*this, *player_right_leg, "Player Right Foot", "Your right foot.", 100, 10, true, false);
-	BodyPart* const player_left_leg = new BodyPart(*this, *player, "Player Left Leg", "Your left leg.", 100, 10, true, false);
-	BodyPart* const player_left_foot = new BodyPart(*this, *player_left_leg, "Player Left Foot", "Your left foot.", 100, 10, true, false);
+	Item* const player_head = new Item(*this, *player, ItemType::BodyPart, "Player Head", "Your head.", 100, 10, false, nullptr);
+	Item* const player_right_eye = new Item(*this, *player_head, ItemType::BodyPart, "Player Right Eye", "Your right eye.", 100, 10, false, nullptr);
+	Item* const player_left_eye = new Item(*this, *player_head, ItemType::BodyPart, "Player Left Eye", "Your left eye.", 100, 10, false, nullptr);
+	Item* const player_right_arm = new Item(*this, *player, ItemType::BodyPart, "Player Right Arm", "Your right arm.", 100, 10, false, nullptr);
+	Item* const player_right_hand = new Item(*this, *player_right_arm, ItemType::BodyPart, "Player Right Hand", "Your right hand.", 100, 10, true, nullptr);
+	Item* const player_left_arm = new Item(*this, *player, ItemType::BodyPart, "Player Left Arm", "Your left arm.", 100, 10, false, nullptr);
+	Item* const player_left_hand = new Item(*this, *player_left_arm, ItemType::BodyPart, "Player Left Hand", "Your left hand.", 100, 10, true, nullptr);
+	Item* const player_right_leg = new Item(*this, *player, ItemType::BodyPart, "Player Right Leg", "Your right leg.", 100, 10, false, nullptr);
+	Item* const player_right_foot = new Item(*this, *player_right_leg, ItemType::BodyPart, "Player Right Foot", "Your right foot.", 100, 10, false, nullptr);
+	Item* const player_left_leg = new Item(*this, *player, ItemType::BodyPart, "Player Left Leg", "Your left leg.", 100, 10, false, nullptr);
+	Item* const player_left_foot = new Item(*this, *player_left_leg, ItemType::BodyPart, "Player Left Foot", "Your left foot.", 100, 10, false, nullptr);
 }
 
 World::~World()

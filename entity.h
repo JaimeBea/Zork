@@ -8,9 +8,7 @@ enum class EntityType
 	Exit,
 	Player,
 	NPC,
-	Pickable,
-	Furniture,
-	BodyPart
+	Item
 };
 
 class World;
@@ -25,9 +23,9 @@ public:
 	virtual void Inspect() const;
 
 	World* const world;
-	EntityType entity_type;
-	std::string name;
-	std::string description;
+	const EntityType entity_type;
+	const std::string name;
+	const std::string description;
 	std::list<Entity*> contains;
 	const int starting_health;
 	int health;
