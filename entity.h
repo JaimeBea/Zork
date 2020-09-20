@@ -14,11 +14,12 @@ enum class EntityType
 };
 
 class World;
+class Item;
 
 class Entity
 {
 public:
-	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health);
+	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health, const Item* key);
 	~Entity();
 
 	virtual void Inspect() const;
@@ -30,4 +31,5 @@ public:
 	std::list<Entity*> contains;
 	const int starting_health;
 	int health;
+	const Item* key;
 };

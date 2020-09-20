@@ -1,7 +1,7 @@
 #include "item.h"
 
-Item::Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container)
-	: Entity(world, type, name, description, health), parent(&parent), damage(damage), is_container(is_container)
+Item::Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container, const Item* key)
+	: Entity(world, type, name, description, health, key), parent(&parent), damage(damage), is_container(is_container)
 {
 	parent.contains.push_back(this);
 }
@@ -17,11 +17,16 @@ void Item::Inspect() const
 
 	if (health == 0)
 	{
-		std::cout << "It's broken.\n\n";
+		std::cout << "It's broken.\n";
 	}
 
-	if (!contains.empty())
+	if (key != nullptr)
 	{
+		std::cout << "You need a key to open it.\n";
+	}
+	else if (!contains.empty())
+	{
+		std::cout << "\n";
 		std::cout << "Contains:\n";
 		for (const Entity* const entity : contains)
 		{
@@ -29,8 +34,8 @@ void Item::Inspect() const
 
 			std::cout << "  " << entity->name << "\n";
 		}
-		std::cout << "\n";
 	}
+	std::cout << "\n";
 }
 
 void Item::ChangeParent(Entity& new_parent)

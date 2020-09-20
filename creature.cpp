@@ -3,7 +3,7 @@
 #include "body_part.h"
 
 Creature::Creature(World& world, Room& location, EntityType entity_type, const std::string& name, const std::string& description, int health)
-	: Entity(world, entity_type, name, description, health), location(&location)
+	: Entity(world, entity_type, name, description, health, nullptr), location(&location)
 {
 	location.contains.push_back(this);
 }

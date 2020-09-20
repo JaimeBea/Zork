@@ -1,7 +1,7 @@
 #include "room.h"
 #include "exit.h"
 
-Room::Room(World& world, const std::string& name, const std::string& description) : Entity(world, EntityType::Room, name, description, -1) {}
+Room::Room(World& world, const std::string& name, const std::string& description) : Entity(world, EntityType::Room, name, description, -1, nullptr) {}
 
 void Room::Inspect() const
 {

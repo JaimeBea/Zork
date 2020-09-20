@@ -47,10 +47,13 @@ Entity* RecursivelySearchEntity(const std::list<Entity*>& entities, const std::s
 			return entity;
 		}
 
-		Entity* const child_entity = RecursivelySearchEntity(entity->contains, name);
-		if (child_entity != nullptr)
+		if (entity->key == nullptr) // Only search the childs of an object if it's open
 		{
-			return child_entity;
+			Entity* const child_entity = RecursivelySearchEntity(entity->contains, name);
+			if (child_entity != nullptr)
+			{
+				return child_entity;
+			}
 		}
 	}
 
@@ -115,7 +118,12 @@ bool Player::Go(Direction direction)
 	const Exit* const exit = location->GetExit(direction);
 	if (exit == nullptr)
 	{
-		std::cout << "You can't go " << GetDirectionName(direction) << "\n\n";
+		std::cout << "You can't go " << GetDirectionName(direction) << ".\n\n";
+		return false;
+	}
+	if (exit->key != nullptr)
+	{
+		std::cout << "The door is locked with a key.\n\n";
 		return false;
 	}
 
@@ -398,5 +406,35 @@ bool Player::Hit(const std::string& target_name, const std::string& source_name)
 		Damage(target_entity, source_item);
 	}
 
+	return true;
+}
+
+bool Player::Open(const std::string& name)
+{
+	Entity* const entity = RecursivelySearchEntity(location->contains, name);
+	if (entity == nullptr)
+	{
+		// Unknown name
+		std::cout << "The thing you tried to open doesn't exist.\n\n";
+		return false;
+	}
+	if (entity->key == nullptr)
+	{
+		// No key needed
+		std::cout << "You can't open '" << entity->name << "' with a key.\n\n";
+		return false;
+	}
+
+	Entity* const key = RecursivelySearchEntity(contains, entity->key->name);
+	if (key == nullptr)
+	{
+		// No key
+		std::cout << "You can't open '" << entity->name << "' without '" << entity->key->name << "'.\n\n";
+		return false;
+	}
+
+	// Open the entity
+	entity->key = nullptr;
+	std::cout << "You open '" << entity->name << "' with '" << key->name << "'.\n\n";
 	return true;
 }

@@ -9,7 +9,7 @@ class Room;
 class Item : public Entity
 {
 public:
-	Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container = false);
+	Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container, const Item* key);
 	~Item();
 
 	void Inspect() const override;

@@ -17,4 +17,5 @@ public:
 	bool Drop(const std::string& name);
 	bool Put(const std::string& name, const std::string& container_name);
 	bool Hit(const std::string& target_name, const std::string& source_name);
+	bool Open(const std::string& name);
 };

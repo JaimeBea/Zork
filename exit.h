@@ -10,7 +10,7 @@ class Item;
 class Exit : public Entity
 {
 public:
-	Exit(World& world, const std::string& name, const std::string& description, int health, Room& origin, Room& destination, Direction direction);
+	Exit(World& world, const std::string& name, const std::string& description, int health, Room& origin, Room& destination, Direction direction, const Item* key);
 	~Exit();
 
 	void Inspect() const override;
