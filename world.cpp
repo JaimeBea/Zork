@@ -3,89 +3,91 @@
 #include "exit.h"
 #include "player.h"
 #include "npc.h"
-#include "item.h"
+#include "pickable.h"
+#include "furniture.h"
+#include "body_part.h"
 
 World::World()
 {
 	// Rooms
 
 	Room* const cell = new Room(*this, "Player Cell", "You find yourself inside a very small cell. There is a bed tucked in the corner.");
-	Item* const player_bed = new Item(*this, *cell, "Bed", "Your bed. It's a simple wooden bed with very little padding.", true, true, false);
-	Item* const envelope = new Item(*this, *player_bed, "Envelope", "A letter envelope.", true, false, false);
-	Item* const letter = new Item(*this, *envelope, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor", false, false, false);
+	Furniture* const player_bed = new Furniture(*this, *cell, "Bed", "Your bed. It's a simple wooden bed with very little padding.", 100, true);
+	Pickable* const envelope = new Pickable(*this, *player_bed, "Envelope", "A letter envelope.", 100, 10, true);
+	Pickable* const letter = new Pickable(*this, *envelope, "Letter", "\"I'll be waiting outside for you. Hurry up and win the fight!\"\n - Amor", 100, 10);
 
 	Room* const corridor = new Room(*this, "Jail Corridor", "The corridor extends to the east and west. There are cells to the north and south.");
 
 	Room* const other_cell = new Room(*this, "Empty Cell", "The cell is very similar to the other one. The bed is broken and a plank with nails rests on the ground.");
-	Item* const broken_bed = new Item(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", true, true, false);
-	Item* const board = new Item(*this, *broken_bed, "Board", "This board broke off from the broken bed.", false, false, false);
+	Furniture* const broken_bed = new Furniture(*this, *other_cell, "Broken bed", "The remains of a wooden bed. Looks like a heavy fight happened.", 100, true);
+	Pickable* const board = new Pickable(*this, *broken_bed, "Board", "This board broke off from the broken bed.", 100, 10);
 
 	Room* const arena_lounge = new Room(*this, "Arena Lounge", "You find yourself at the arena lounge. You can see the light coming from the arena.");
-	Item* const banana_peel = new Item(*this, *arena_lounge, "Banana Peel", "A banana peel.", false, false, false);
+	Pickable* const banana_peel = new Pickable(*this, *arena_lounge, "Banana Peel", "A banana peel.", 100, 10);
 
 	Room* const office = new Room(*this, "Office", "You are in your slavemaster Porcius' office. Porcius is distracted looking at some documents away from the door.");
-	NPC* const porcius = new NPC(*this, *office, "Porcius", "Your slavemaster is extremely fat and ugly. His face resembles a pig.");
-	Item* const porcius_head = new Item(*this, *porcius, "Porcius Head", "Porcius' head.", false, false, true);
-	Item* const porcius_right_eye = new Item(*this, *porcius_head, "Porcius Right Eye", "Porcius' right eye.", false, false, true);
-	Item* const porcius_left_eye = new Item(*this, *porcius_head, "Porcius Left Eye", "Porcius' left eye.", false, false, true);
-	Item* const porcius_right_arm = new Item(*this, *porcius, "Porcius Right Arm", "Porcius' right arm.", false, false, true);
-	Item* const porcius_right_hand = new Item(*this, *porcius_right_arm, "Porcius Right Hand", "Porcius' right hand.", true, false, true);
-	Item* const porcius_left_arm = new Item(*this, *porcius, "Porcius Left Arm", "Porcius' left arm.", false, false, true);
-	Item* const porcius_left_hand = new Item(*this, *porcius_left_arm, "Porcius Left Hand", "Porcius' left hand.", true, false, true);
-	Item* const porcius_right_leg = new Item(*this, *porcius, "Porcius Right Leg", "Porcius' right leg.", false, false, true);
-	Item* const porcius_right_foot = new Item(*this, *porcius_right_leg, "Porcius Right Foot", "Porcius' right foot.", false, false, true);
-	Item* const porcius_left_leg = new Item(*this, *porcius, "Porcius Left Leg", "Porcius' left leg.", false, false, true);
-	Item* const porcius_left_foot = new Item(*this, *porcius_left_leg, "Porcius Left Foot", "Porcius' left foot.", false, false, true);
-	Item* const dagger = new Item(*this, *porcius_right_arm, "Dagger", "Porcius' dagger. It's decorated with gems of multiple colors.", false, false, false);
-	Item* const desk_key = new Item(*this, *porcius_right_leg, "Desk Key", "It opens the desk in Porcius' office.", false, false, false);
-	Item* const desk = new Item(*this, *office, "Desk", "A wooden desk. There are multiple drawers.", true, true, false);
-	Item* const armory_key = new Item(*this, *desk, "Armory Key", "The key that opens the armory door.", false, false, false);
+	NPC* const porcius = new NPC(*this, *office, "Porcius", "Your slavemaster is extremely fat and ugly. His face resembles a pig.", 100);
+	BodyPart* const porcius_head = new BodyPart(*this, *porcius, "Porcius Head", "Porcius' head.", 100, 10, true);
+	BodyPart* const porcius_right_eye = new BodyPart(*this, *porcius_head, "Porcius Right Eye", "Porcius' right eye.", 100, 10, true);
+	BodyPart* const porcius_left_eye = new BodyPart(*this, *porcius_head, "Porcius Left Eye", "Porcius' left eye.", 100, 10, true);
+	BodyPart* const porcius_right_arm = new BodyPart(*this, *porcius, "Porcius Right Arm", "Porcius' right arm.", 100, 10, true);
+	BodyPart* const porcius_right_hand = new BodyPart(*this, *porcius_right_arm, "Porcius Right Hand", "Porcius' right hand.", 100, 10, true, true);
+	BodyPart* const porcius_left_arm = new BodyPart(*this, *porcius, "Porcius Left Arm", "Porcius' left arm.", 100, 10, true);
+	BodyPart* const porcius_left_hand = new BodyPart(*this, *porcius_left_arm, "Porcius Left Hand", "Porcius' left hand.", 100, 10, true, true);
+	BodyPart* const porcius_right_leg = new BodyPart(*this, *porcius, "Porcius Right Leg", "Porcius' right leg.", 100, 10, true);
+	BodyPart* const porcius_right_foot = new BodyPart(*this, *porcius_right_leg, "Porcius Right Foot", "Porcius' right foot.", 100, 10, true);
+	BodyPart* const porcius_left_leg = new BodyPart(*this, *porcius, "Porcius Left Leg", "Porcius' left leg.", 100, 10, true);
+	BodyPart* const porcius_left_foot = new BodyPart(*this, *porcius_left_leg, "Porcius Left Foot", "Porcius' left foot.", 100, 10, true);
+	Pickable* const dagger = new Pickable(*this, *porcius_right_arm, "Dagger", "Porcius' dagger. It's decorated with gems of multiple colors.", 100, 10);
+	Pickable* const desk_key = new Pickable(*this, *porcius_right_leg, "Desk Key", "It opens the desk in Porcius' office.", 100, 10);
+	Furniture* const desk = new Furniture(*this, *office, "Desk", "A wooden desk. There are multiple drawers.", 100, true);
+	Pickable* const armory_key = new Pickable(*this, *desk, "Armory Key", "The key that opens the armory door.", 100, 10);
 
 	Room* const armory = new Room(*this, "Armory", "The armory is enormous. There are a lot of weapons to pick from.");
-	Item* const sword = new Item(*this, *armory, "Sword", "Metal sword.", false, false, false);
-	Item* const mace = new Item(*this, *armory, "Mace", "Metal mace.", false, false, false);
-	Item* const spear = new Item(*this, *armory, "Spear", "Metal spear.", false, false, false);
-	Item* const shield = new Item(*this, *armory, "Shield", "Metal shield.", false, false, false);
+	Pickable* const sword = new Pickable(*this, *armory, "Sword", "Metal sword.", 100, 10);
+	Pickable* const mace = new Pickable(*this, *armory, "Mace", "Metal mace.", 100, 10);
+	Pickable* const spear = new Pickable(*this, *armory, "Spear", "Metal spear.", 100, 10);
+	Pickable* const shield = new Pickable(*this, *armory, "Shield", "Metal shield.", 100, 10);
 
 	Room* const arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
-	NPC* const kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.");
-	Item* const kroz_head = new Item(*this, *kroz, "Kroz Head", "Kroz's head.", false, false, true);
-	Item* const kroz_right_eye = new Item(*this, *kroz_head, "Kroz Right Eye", "Kroz's right eye.", false, false, true);
-	Item* const kroz_left_eye = new Item(*this, *kroz_head, "Kroz Left Eye", "Kroz's left eye.", false, false, true);
-	Item* const kroz_right_arm = new Item(*this, *kroz, "Kroz Right Arm", "Kroz's right arm.", false, false, true);
-	Item* const kroz_right_hand = new Item(*this, *kroz_right_arm, "Kroz Right Hand", "Kroz's right hand.", true, false, true);
-	Item* const kroz_left_arm = new Item(*this, *kroz, "Kroz Left Arm", "Kroz's left arm.", false, false, true);
-	Item* const kroz_left_hand = new Item(*this, *kroz_left_arm, "Kroz Left Hand", "Kroz's left hand.", true, false, true);
-	Item* const kroz_right_leg = new Item(*this, *kroz, "Kroz Right Leg", "Kroz's right leg.", false, false, true);
-	Item* const kroz_right_foot = new Item(*this, *kroz_right_leg, "Kroz Right Foot", "Kroz's right foot.", false, false, true);
-	Item* const kroz_left_leg = new Item(*this, *kroz, "Kroz Left Leg", "Kroz's left leg.", false, false, true);
-	Item* const kroz_left_foot = new Item(*this, *kroz_left_leg, "Kroz Left Foot", "Kroz's left foot.", false, false, true);
-	Item* const axe = new Item(*this, *kroz_right_hand, "Axe", "Kroz's Axe. It's taller than you.", false, false, false);
-	Item* const morning_star = new Item(*this, *kroz_left_hand, "Morning Star", "Kroz's Morning Star. A huge metal mace with spikes.", false, false, false);
+	NPC* const kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.", 100);
+	BodyPart* const kroz_head = new BodyPart(*this, *kroz, "Kroz Head", "Kroz's head.", 100, 10, true);
+	BodyPart* const kroz_right_eye = new BodyPart(*this, *kroz_head, "Kroz Right Eye", "Kroz's right eye.", 100, 10, true);
+	BodyPart* const kroz_left_eye = new BodyPart(*this, *kroz_head, "Kroz Left Eye", "Kroz's left eye.", 100, 10, true);
+	BodyPart* const kroz_right_arm = new BodyPart(*this, *kroz, "Kroz Right Arm", "Kroz's right arm.", 100, 10, true);
+	BodyPart* const kroz_right_hand = new BodyPart(*this, *kroz_right_arm, "Kroz Right Hand", "Kroz's right hand.", 100, 10, true, true);
+	BodyPart* const kroz_left_arm = new BodyPart(*this, *kroz, "Kroz Left Arm", "Kroz's left arm.", 100, 10, true);
+	BodyPart* const kroz_left_hand = new BodyPart(*this, *kroz_left_arm, "Kroz Left Hand", "Kroz's left hand.", 100, 10, true, true);
+	BodyPart* const kroz_right_leg = new BodyPart(*this, *kroz, "Kroz Right Leg", "Kroz's right leg.", 100, 10, true);
+	BodyPart* const kroz_right_foot = new BodyPart(*this, *kroz_right_leg, "Kroz Right Foot", "Kroz's right foot.", 100, 10, true);
+	BodyPart* const kroz_left_leg = new BodyPart(*this, *kroz, "Kroz Left Leg", "Kroz's left leg.", 100, 10, true);
+	BodyPart* const kroz_left_foot = new BodyPart(*this, *kroz_left_leg, "Kroz Left Foot", "Kroz's left foot.", 100, 10, true);
+	Pickable* const axe = new Pickable(*this, *kroz_right_hand, "Axe", "Kroz's Axe. It's taller than you.", 100, 10);
+	Pickable* const morning_star = new Pickable(*this, *kroz_left_hand, "Morning Star", "Kroz's Morning Star. A huge metal mace with spikes.", 100, 10);
 
 	// Exits
 
-	Exit* const cell_exit = new Exit(*this, "Player Cell Door", "Door made of vertical metal bars.", *cell, *corridor, Direction::North);
-	Exit* const other_cell_exit = new Exit(*this, "Empty Cell Door", "Door made of vertical metal bars.", *other_cell, *corridor, Direction::South);
-	Exit* const arena_lounge_corridor_exit = new Exit(*this, "Lounge Door", "Simple wooden door.", *arena_lounge, *corridor, Direction::East);
-	Exit* const office_exit = new Exit(*this, "Office Door", "Simple wooden door.", *office, *corridor, Direction::West);
-	Exit* const armory_exit = new Exit(*this, "Armory Door", "Full metal door with a keylock.", *armory, *arena_lounge, Direction::North);
-	Exit* const arena_lounge_arena_exit = new Exit(*this, "Arena Entrance", "Very large wooden door.", *arena_lounge, *arena, Direction::North);
+	Exit* const cell_exit = new Exit(*this, "Player Cell Door", "Door made of vertical metal bars.", 100, *cell, *corridor, Direction::North);
+	Exit* const other_cell_exit = new Exit(*this, "Empty Cell Door", "Door made of vertical metal bars.", 100, *other_cell, *corridor, Direction::South);
+	Exit* const arena_lounge_corridor_exit = new Exit(*this, "Lounge Door", "Simple wooden door.", 100, *arena_lounge, *corridor, Direction::East);
+	Exit* const office_exit = new Exit(*this, "Office Door", "Simple wooden door.", 100, *office, *corridor, Direction::West);
+	Exit* const armory_exit = new Exit(*this, "Armory Door", "Full metal door with a keylock.", 100, *armory, *arena_lounge, Direction::North);
+	Exit* const arena_lounge_arena_exit = new Exit(*this, "Arena Entrance", "Very large wooden door.", 100, *arena_lounge, *arena, Direction::North);
 
 	// Player
 
-	player = new Player(*this, *cell, "Player", "You look fine.");
-	Item* const player_head = new Item(*this, *player, "Player Head", "Your head.", false, false, true);
-	Item* const player_right_eye = new Item(*this, *player_head, "Player Right Eye", "Your right eye.", false, false, true);
-	Item* const player_left_eye = new Item(*this, *player_head, "Player Left Eye", "Your left eye.", false, false, true);
-	Item* const player_right_arm = new Item(*this, *player, "Player Right Arm", "Your right arm.", false, false, true);
-	Item* const player_right_hand = new Item(*this, *player_right_arm, "Player Right Hand", "Your right hand.", true, false, true);
-	Item* const player_left_arm = new Item(*this, *player, "Player Left Arm", "Your left arm.", false, false, true);
-	Item* const player_left_hand = new Item(*this, *player_left_arm, "Player Left Hand", "Your left hand.", true, false, true);
-	Item* const player_right_leg = new Item(*this, *player, "Player Right Leg", "Your right leg.", false, false, true);
-	Item* const player_right_foot = new Item(*this, *player_right_leg, "Player Right Foot", "Your right foot.", false, false, true);
-	Item* const player_left_leg = new Item(*this, *player, "Player Left Leg", "Your left leg.", false, false, true);
-	Item* const player_left_foot = new Item(*this, *player_left_leg, "Player Left Foot", "Your left foot.", false, false, true);
+	player = new Player(*this, *cell, "Player", "You look fine.", 100);
+	BodyPart* const player_head = new BodyPart(*this, *player, "Player Head", "Your head.", 100, 10, true);
+	BodyPart* const player_right_eye = new BodyPart(*this, *player_head, "Player Right Eye", "Your right eye.", 100, 10, true);
+	BodyPart* const player_left_eye = new BodyPart(*this, *player_head, "Player Left Eye", "Your left eye.", 100, 10, true);
+	BodyPart* const player_right_arm = new BodyPart(*this, *player, "Player Right Arm", "Your right arm.", 100, 10, true);
+	BodyPart* const player_right_hand = new BodyPart(*this, *player_right_arm, "Player Right Hand", "Your right hand.", 100, 10, true, true);
+	BodyPart* const player_left_arm = new BodyPart(*this, *player, "Player Left Arm", "Your left arm.", 100, 10, true);
+	BodyPart* const player_left_hand = new BodyPart(*this, *player_left_arm, "Player Left Hand", "Your left hand.", 100, 10, true, true);
+	BodyPart* const player_right_leg = new BodyPart(*this, *player, "Player Right Leg", "Your right leg.", 100, 10, true);
+	BodyPart* const player_right_foot = new BodyPart(*this, *player_right_leg, "Player Right Foot", "Your right foot.", 100, 10, true);
+	BodyPart* const player_left_leg = new BodyPart(*this, *player, "Player Left Leg", "Your left leg.", 100, 10, true);
+	BodyPart* const player_left_foot = new BodyPart(*this, *player_left_leg, "Player Left Foot", "Your left foot.", 100, 10, true);
 }
 
 World::~World()
@@ -115,6 +117,7 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			std::cout << "  take <object> - Picks up an item.\n";
 			std::cout << "  drop <object> - Drops an item.\n";
 			std::cout << "  put <object> in <object> - Puts an item inside an object.\n";
+			std::cout << "  hit <object> with <object> - Hits something with the given object.\n";
 			std::cout << "\n";
 			std::cout << "Objects:\n";
 			std::cout << "  Everything inside the room or inside the objects of the room counts as an object.\n";
@@ -193,6 +196,34 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			const std::string container_name = JoinTokens(tokens, in_location + 1, tokens.size());
 
 			if (player->Put(name, container_name))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (tokens[0] == "hit")
+		{
+			int with_location = -1;
+			for (int i = 1; i < tokens.size(); i++)
+			{
+				if (tokens[i] == "with")
+				{
+					with_location = i;
+				}
+			}
+			if (with_location == -1)
+			{
+				std::cout << "You have to specify what you want to use.\n\n";
+				return false;
+			}
+
+			const std::string target_name = JoinTokens(tokens, 1, with_location);
+			const std::string source_name = JoinTokens(tokens, with_location + 1, tokens.size());
+
+			if (player->Hit(target_name, source_name))
 			{
 				return true;
 			}

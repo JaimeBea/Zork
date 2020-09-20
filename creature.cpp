@@ -1,8 +1,9 @@
 #include "creature.h"
 #include "room.h"
-#include "item.h"
+#include "body_part.h"
 
-Creature::Creature(World& world, Room& location, EntityType entity_type, const std::string& name, const std::string& description) : Entity(world, entity_type, name, description), location(&location)
+Creature::Creature(World& world, Room& location, EntityType entity_type, const std::string& name, const std::string& description, int health)
+	: Entity(world, entity_type, name, description, health), location(&location)
 {
 	location.contains.push_back(this);
 }
@@ -16,25 +17,34 @@ void ListInventoryRecursive(const Entity* parent)
 {
 	for (const Entity* const entity : parent->contains)
 	{
-		if (entity->entity_type != EntityType::Item) continue;
-
-		const Item* const item = dynamic_cast<const Item*>(entity);
-
-		if (!item->is_attached)
+		if (entity->entity_type == EntityType::Pickable)
 		{
-			std::cout << "  " << item->name << " (" << parent->name << ")\n";
+			std::cout << "  " << entity->name << " (" << parent->name << ")\n";
 		}
-		else
+		else if (entity->entity_type == EntityType::BodyPart)
 		{
-			ListInventoryRecursive(item);
+			const BodyPart* const body_part = dynamic_cast<const BodyPart*>(entity);
+
+			if (!body_part->is_attached)
+			{
+				std::cout << "  " << body_part->name << " (" << parent->name << ")\n";
+			}
+			else
+			{
+				ListInventoryRecursive(body_part);
+			}
 		}
 	}
 }
 
 void Creature::Inspect() const
 {
-	std::cout << name << ":\n";
-	std::cout << description << "\n\n";
+	Entity::Inspect();
+
+	if (health == 0)
+	{
+		std::cout << "Deceased.\n\n";
+	}
 
 	if (!contains.empty())
 	{
@@ -45,13 +55,14 @@ void Creature::Inspect() const
 		std::cout << "Body:\n";
 		for (const Entity* const entity : contains)
 		{
-			if (entity->entity_type != EntityType::Item) continue;
-
-			const Item* const item = dynamic_cast<const Item*>(entity);
-
-			if (item->is_attached)
+			if (entity->entity_type == EntityType::BodyPart)
 			{
-				std::cout << "  " << item->name << "\n";
+				const BodyPart* const body_part = dynamic_cast<const BodyPart*>(entity);
+
+				if (body_part->is_attached)
+				{
+					std::cout << "  " << body_part->name << "\n";
+				}
 			}
 		}
 		std::cout << "\n";

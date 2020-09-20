@@ -6,8 +6,6 @@
 #include <list>
 #include <algorithm>
 
-typedef long EntityID;
-
 enum class Direction
 {
 	Unknown,

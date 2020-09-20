@@ -1,6 +1,7 @@
 #include "item.h"
 
-Item::Item(World& world, Entity& parent, const std::string& name, const std::string& description, bool is_container, bool is_big, bool is_attached) : Entity(world, EntityType::Item, name, description), parent(&parent), is_container(is_container), is_big(is_big), is_attached(is_attached)
+Item::Item(World& world, Entity& parent, EntityType type, const std::string& name, const std::string& description, int health, int damage, bool is_container)
+	: Entity(world, type, name, description, health), parent(&parent), damage(damage), is_container(is_container)
 {
 	parent.contains.push_back(this);
 }
@@ -12,8 +13,12 @@ Item::~Item()
 
 void Item::Inspect() const
 {
-	std::cout << name << ":\n";
-	std::cout << description << "\n\n";
+	Entity::Inspect();
+
+	if (health == 0)
+	{
+		std::cout << "It's broken.\n\n";
+	}
 
 	if (!contains.empty())
 	{

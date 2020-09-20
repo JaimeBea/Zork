@@ -3,6 +3,7 @@
 #include "common.h"
 #include "entity.h"
 
+class World;
 class Exit;
 
 class Room : public Entity

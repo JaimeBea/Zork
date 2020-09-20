@@ -8,7 +8,9 @@ enum class EntityType
 	Exit,
 	Player,
 	NPC,
-	Item
+	Pickable,
+	Furniture,
+	BodyPart
 };
 
 class World;
@@ -16,7 +18,7 @@ class World;
 class Entity
 {
 public:
-	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description);
+	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health);
 	~Entity();
 
 	virtual void Inspect() const;
@@ -26,4 +28,6 @@ public:
 	std::string name;
 	std::string description;
 	std::list<Entity*> contains;
+	const int starting_health;
+	int health;
 };

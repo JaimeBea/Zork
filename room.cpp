@@ -1,12 +1,11 @@
 #include "room.h"
 #include "exit.h"
 
-Room::Room(World& world, const std::string& name, const std::string& description) : Entity(world, EntityType::Room, name, description) {}
+Room::Room(World& world, const std::string& name, const std::string& description) : Entity(world, EntityType::Room, name, description, -1) {}
 
 void Room::Inspect() const
 {
-	std::cout << name << ":\n";
-	std::cout << description << "\n\n";
+	Entity::Inspect();
 
 	if (!contains.empty())
 	{

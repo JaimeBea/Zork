@@ -1,8 +1,8 @@
 #pragma once
 
 #include "common.h"
-#include "entity.h"
 
+class Entity;
 class Player;
 
 class World

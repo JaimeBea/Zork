@@ -1,7 +1,8 @@
 #include "exit.h"
 #include "room.h"
 
-Exit::Exit(World& world, const std::string& name, const std::string& description, Room& origin, Room& destination, Direction direction) : Entity(world, EntityType::Exit, name, description), origin(&origin), destination(&destination), direction(direction)
+Exit::Exit(World& world, const std::string& name, const std::string& description, int health, Room& origin, Room& destination, Direction direction)
+	: Entity(world, EntityType::Exit, name, description, health), origin(&origin), destination(&destination), direction(direction)
 {
 	origin.contains.push_back(this);
 	destination.contains.push_back(this);
@@ -15,8 +16,12 @@ Exit::~Exit()
 
 void Exit::Inspect() const
 {
-	std::cout << name << ":\n";
-	std::cout << description << "\n\n";
+	Entity::Inspect();
+
+	if (health == 0)
+	{
+		std::cout << "It's broken.\n\n";
+	}
 
 	std::cout << "Connects:\n";
 	std::cout << "  " << origin->name << " (" << GetDirectionName(GetOppositeDirection(direction)) << ")\n";
