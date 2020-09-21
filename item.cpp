@@ -10,11 +10,12 @@ Item::Item
 	const std::string& name,
 	const std::string& description,
 	int health,
+	float damage_multiplier,
 	int damage,
 	bool is_container,
 	Item* key
 )
-	: Entity(world, EntityType::Item, name, description, health, key),
+	: Entity(world, EntityType::Item, name, description, health, damage_multiplier, key),
 	parent(&parent),
 	item_type(item_type),
 	damage(damage),
@@ -89,8 +90,11 @@ void Item::Damage(int damage)
 
 	if (previous_item_type == ItemType::BodyPart)
 	{
-		// Propagate 50% of the damage to the parent
-		parent->Damage(damage / 2);
+		if (starting_health >= 0)
+		{
+			const int propagation_damage = damage * damage_multiplier / 2.0f;
+			parent->Damage(propagation_damage);
+		}
 	}
 }
 

@@ -7,12 +7,13 @@ Exit::Exit
 	const std::string& name,
 	const std::string& description,
 	int health,
+	float damage_multiplier,
 	Room& origin,
 	Room& destination,
 	Direction direction,
 	Item* key
 )
-	: Entity(world, EntityType::Exit, name, description, health, key),
+	: Entity(world, EntityType::Exit, name, description, health, damage_multiplier, key),
 	origin(&origin),
 	destination(&destination),
 	direction(direction)

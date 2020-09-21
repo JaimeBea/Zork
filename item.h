@@ -24,6 +24,7 @@ public:
 		const std::string& name,
 		const std::string& description,
 		int health,
+		float damage_multiplier,
 		int damage,
 		bool is_container,
 		Item* key

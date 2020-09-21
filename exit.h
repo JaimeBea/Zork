@@ -16,6 +16,7 @@ public:
 		const std::string& name,
 		const std::string& description,
 		int health,
+		float damage_multiplier,
 		Room& origin,
 		Room& destination,
 		Direction direction,

@@ -4,8 +4,16 @@
 #include "item.h"
 #include "npc.h"
 
-Player::Player(World& world, Room& location, const std::string& name, const std::string& description, int health)
-	: Creature(world, location, EntityType::Player, name, description, health)
+Player::Player
+(
+	World& world,
+	Room& location,
+	const std::string& name,
+	const std::string& description,
+	int health,
+	float damage_multiplier
+)
+	: Creature(world, location, EntityType::Player, name, description, health, damage_multiplier)
 {
 	location.Inspect();
 }

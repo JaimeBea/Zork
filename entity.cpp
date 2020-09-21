@@ -1,8 +1,24 @@
 #include "entity.h"
 #include "world.h"
 
-Entity::Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health, Item* key)
-	: world(&world), entity_type(entity_type), name(name), description(description), starting_health(health), health(health), key(key)
+Entity::Entity
+(
+	World& world,
+	EntityType entity_type,
+	const std::string& name,
+	const std::string& description,
+	int health,
+	float damage_multiplier,
+	Item* key
+)
+	: world(&world),
+	entity_type(entity_type),
+	name(name),
+	description(description),
+	starting_health(health),
+	health(health),
+	damage_multiplier(damage_multiplier),
+	key(key)
 {
 	world.entities.push_back(this);
 }
@@ -17,7 +33,8 @@ void Entity::Inspect() const
 
 void Entity::Damage(int damage)
 {
-	health = std::max(0, health - damage);
+	const int final_damage = damage * damage_multiplier;
+	health = std::max(0, health - final_damage);
 }
 
 Entity* Entity::SearchEntity(const std::string & name) const

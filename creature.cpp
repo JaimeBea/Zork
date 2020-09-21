@@ -2,8 +2,18 @@
 #include "room.h"
 #include "item.h"
 
-Creature::Creature(World& world, Room& location, EntityType entity_type, const std::string& name, const std::string& description, int health)
-	: Entity(world, entity_type, name, description, health, nullptr), location(&location)
+Creature::Creature
+(
+	World& world,
+	Room& location,
+	EntityType entity_type,
+	const std::string& name,
+	const std::string& description,
+	int health,
+	float damage_multiplier
+)
+	: Entity(world, entity_type, name, description, health, damage_multiplier, nullptr),
+	location(&location)
 {
 	location.contains.push_back(this);
 }

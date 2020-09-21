@@ -3,8 +3,19 @@
 #include "player.h"
 #include "item.h"
 
-NPC::NPC(World& world, Room& location, NPCType npc_type, const std::string& name, const std::string& description, int health)
-	: Creature(world, location, EntityType::NPC, name, description, health), npc_type(npc_type) {}
+NPC::NPC
+(
+	World& world,
+	Room& location,
+	NPCType npc_type,
+	const std::string& name,
+	const std::string& description,
+	int health,
+	float damage_multiplier
+)
+	: Creature(world, location, EntityType::NPC, name, description, health, damage_multiplier),
+	npc_type(npc_type)
+{}
 
 Item* RecursivelySearchPickable(const Entity& parent)
 {

@@ -9,7 +9,15 @@ class Room;
 class Player : public Creature
 {
 public:
-	Player(World& world, Room& location, const std::string& name, const std::string& description, int health);
+	Player
+	(
+		World& world,
+		Room& location,
+		const std::string& name,
+		const std::string& description,
+		int health,
+		float damage_multiplier
+	);
 
 	void Damage(int damage) override;
 

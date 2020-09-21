@@ -15,7 +15,16 @@ enum class NPCType
 class NPC : public Creature
 {
 public:
-	NPC(World& world, Room& location, NPCType npc_type, const std::string& name, const std::string& description, int health);
+	NPC
+	(
+		World& world,
+		Room& location,
+		NPCType npc_type,
+		const std::string& name,
+		const std::string& description,
+		int health,
+		float damage_multiplier
+	);
 
 	void Update() override;
 	void Damage(int damage) override;
