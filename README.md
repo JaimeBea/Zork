@@ -34,7 +34,33 @@ You can input commands and the player character will execute them.
 - Body parts can be severed when hit, dropping to the floor.
 - You can hit the body of a creature by attaking it directly.
 
+**Map**
+
+```
++---------+
+|         |
+|  Arena  |  +---------+
+|         |  |         |
++---+ +---+  |  Empty  |
+    | |      |  Cell   |
++---+ +---+  |         |
+|         |  +---+ +---+
+|  Arena  |      | |
+|  Lounge +------+ +-------+----------+
+|            Jail Corridor            |
++---+ +---+------+ +-------+  Office  |
+    |+|          | |       |          |
++---+ +---+  +---+ +---+   +----------+
+|         |  |         |
+|  Armory |  |  Player |
+|         |  |  Cell   |
++---------+  |         |
+             +---------+
+```
+
 **How to win**
+
+You win by defeating Kroz. There are many ways to achieve this with different winning odds. The safest way to win is the following:
 
 <details>
 <summary>Spoiler</summary>
