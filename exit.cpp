@@ -10,7 +10,7 @@ Exit::Exit
 	Room& origin,
 	Room& destination,
 	Direction direction,
-	const Item* key
+	Item* key
 )
 	: Entity(world, EntityType::Exit, name, description, health, key),
 	origin(&origin),

@@ -19,6 +19,7 @@ void Play(std::string& player_input, std::vector<std::string> tokens)
 		std::cout << "> ";
 		std::getline(std::cin, player_input);
 		Tokenize(player_input, tokens);
+		std::cout << "\n";
 
 		if (player_input == "quit")
 		{
@@ -46,6 +47,7 @@ int main()
 		Play(player_input, tokens);
 
 		std::cout << "Do you want to try again?\n";
+		std::cout << "\n";
 		std::cout << "> ";
 		std::getline(std::cin, player_input);
 		Tokenize(player_input, tokens);

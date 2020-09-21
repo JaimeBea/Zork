@@ -12,11 +12,21 @@ Player::Player(World& world, Room& location, const std::string& name, const std:
 
 void Player::Damage(int damage)
 {
+	const int previous_health = health;
+
 	Creature::Damage(damage);
 
 	if (health == 0)
 	{
 		std::cout << "You die and ascend to heaven.\n";
+	}
+	else if (health < starting_health / 2 && previous_health >= starting_health / 2)
+	{
+		std::cout << "You are wounded!\n";
+	}
+	else if (health < starting_health / 4 && previous_health >= starting_health / 4)
+	{
+		std::cout << "You are in critical condition!\n";
 	}
 }
 
@@ -40,31 +50,6 @@ bool CheckIsBodyPartEmpty(const Item& body_part)
 	return true;
 }
 
-Entity* RecursivelySearchEntity(const std::list<Entity*>& entities, const std::string& name)
-{
-	for (Entity* const entity : entities)
-	{
-		if (CaseInsensitiveCompare(entity->name, name))
-		{
-			return entity;
-		}
-
-		if (entity->key != nullptr)
-		{
-			// The entity is closed with a key, so we can't look inside
-			continue;
-		}
-
-		Entity* const child_entity = RecursivelySearchEntity(entity->contains, name);
-		if (child_entity != nullptr)
-		{
-			return child_entity;
-		}
-	}
-
-	return nullptr;
-}
-
 bool Player::OnExamine(const std::string& name) const
 {
 	if (name == "")
@@ -74,7 +59,7 @@ bool Player::OnExamine(const std::string& name) const
 	}
 	else
 	{
-		const Entity* const entity = RecursivelySearchEntity(location->contains, name);
+		const Entity* const entity = location->SearchEntity(name);
 		if (entity != nullptr)
 		{
 			entity->Inspect();
@@ -116,7 +101,6 @@ bool Player::OnGo(Direction direction)
 
 	// Examine the new room
 	target->Inspect();
-
 	return true;
 }
 
@@ -155,7 +139,7 @@ Item* RecursivelySearchEmptyBodyPart(const Entity& parent)
 
 bool Player::OnTake(const std::string& name)
 {
-	Entity* const entity = RecursivelySearchEntity(location->contains, name);
+	Entity* const entity = location->SearchEntity(name);
 	if (entity == nullptr)
 	{
 		// Unknown name
@@ -217,7 +201,7 @@ bool Player::OnTake(const std::string& name)
 
 bool Player::OnDrop(const std::string& name)
 {
-	Entity* const entity = RecursivelySearchEntity(contains, name);
+	Entity* const entity = SearchEntity(name);
 	if (entity == nullptr)
 	{
 		// Unknown name
@@ -249,18 +233,18 @@ bool Player::OnDrop(const std::string& name)
 
 bool Player::OnPut(const std::string & name, const std::string & container_name)
 {
-	Entity* const entity = RecursivelySearchEntity(contains, name);
+	Entity* const entity = SearchEntity(name);
 	if (entity == nullptr)
 	{
-		// Unknown name
-		std::cout << "The thing you tried to drop doesn't exist.\n";
+		// Unknown source name
+		std::cout << "You aren't holding any item with that name.\n";
 		return false;
 	}
 
-	Entity* const container_entity = RecursivelySearchEntity(location->contains, container_name);
+	Entity* const container_entity = location->SearchEntity(container_name);
 	if (container_entity == nullptr)
 	{
-		// Unknown name
+		// Unknown target name
 		std::cout << "The object you tried to place the item in doesn't exist.\n";
 		return false;
 	}
@@ -300,6 +284,13 @@ bool Player::OnPut(const std::string & name, const std::string & container_name)
 		return false;
 	}
 
+	if (container_item->key != nullptr)
+	{
+		// Closed with a key
+		std::cout << "'" << container_item->name << "' is closed with a key.\n";
+		return false;
+	}
+
 	if (container_item->item_type == ItemType::BodyPart && !CheckIsBodyPartEmpty(*container_item))
 	{
 		// Full body part
@@ -315,14 +306,14 @@ bool Player::OnPut(const std::string & name, const std::string & container_name)
 
 bool Player::OnHit(const std::string& target_name, const std::string& source_name)
 {
-	Entity* const source_entity = RecursivelySearchEntity(contains, source_name);
+	Entity* const source_entity = SearchEntity(source_name);
 	if (source_entity == nullptr)
 	{
 		std::cout << "The thing you tried to hit with doesn't exist.\n";
 		return false;
 	}
 
-	Entity* const target_entity = RecursivelySearchEntity(location->contains, target_name);
+	Entity* const target_entity = location->SearchEntity(target_name);
 	if (target_entity == nullptr)
 	{
 		std::cout << "The thing you tried to hit doesn't exist.\n";
@@ -338,7 +329,7 @@ bool Player::OnHit(const std::string& target_name, const std::string& source_nam
 	// Damage the target
 	Item* const source_item = dynamic_cast<Item*>(source_entity);
 
-	std::cout << "You hit '" << target_entity->name << "' with '" << source_item->name << "'.\n";
+	std::cout << "You hit '" << target_entity->name << "' with '" << source_item->name << "'!\n";
 	target_entity->Damage(source_item->damage);
 
 	return true;
@@ -346,7 +337,7 @@ bool Player::OnHit(const std::string& target_name, const std::string& source_nam
 
 bool Player::OnOpen(const std::string& name)
 {
-	Entity* const entity = RecursivelySearchEntity(location->contains, name);
+	Entity* const entity = location->SearchEntity(name);
 	if (entity == nullptr)
 	{
 		// Unknown name
@@ -360,7 +351,7 @@ bool Player::OnOpen(const std::string& name)
 		return false;
 	}
 
-	Entity* const key = RecursivelySearchEntity(contains, entity->key->name);
+	Entity* const key = SearchEntity(entity->key->name);
 	if (key == nullptr)
 	{
 		// No key

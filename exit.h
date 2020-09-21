@@ -19,13 +19,13 @@ public:
 		Room& origin,
 		Room& destination,
 		Direction direction,
-		const Item* key
+		Item* key
 	);
 	~Exit();
 
 	void Inspect() const override;
 
-	Room* const origin;
-	Room* const destination;
-	const Direction direction;
+	Room* origin;
+	Room* destination;
+	Direction direction;
 };

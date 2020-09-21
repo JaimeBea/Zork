@@ -17,17 +17,19 @@ class Item;
 class Entity
 {
 public:
-	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health, const Item* key);
+	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health, Item* key);
 
+	virtual void Update();
 	virtual void Inspect() const;
 	virtual void Damage(int damage);
+	Entity* SearchEntity(const std::string& name) const;
 
 	World* const world;
-	const EntityType entity_type;
-	const std::string name;
-	const std::string description;
+	EntityType entity_type;
+	std::string name;
+	std::string description;
 	std::list<Entity*> contains;
-	const int starting_health;
+	int starting_health;
 	int health;
-	const Item* key;
+	Item* key;
 };

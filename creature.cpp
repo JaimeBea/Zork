@@ -41,7 +41,18 @@ void Creature::Inspect() const
 
 	if (health == 0)
 	{
+		std::cout << "Health Status:\n";
 		std::cout << "  Deceased.\n";
+	}
+	else if (health < starting_health / 2)
+	{
+		std::cout << "Health Status:\n";
+		std::cout << "  Wounded.\n";
+	}
+	else if (health < starting_health / 4)
+	{
+		std::cout << "Health Status:\n";
+		std::cout << "  Critical.\n";
 	}
 
 	if (!contains.empty())

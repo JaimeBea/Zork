@@ -26,7 +26,7 @@ public:
 		int health,
 		int damage,
 		bool is_container,
-		const Item* key
+		Item* key
 	);
 	~Item();
 
@@ -39,6 +39,6 @@ public:
 
 	Entity* parent;
 	ItemType item_type;
-	const int damage;
-	const bool is_container;
+	int damage;
+	bool is_container;
 };

@@ -12,7 +12,7 @@ Item::Item
 	int health,
 	int damage,
 	bool is_container,
-	const Item* key
+	Item* key
 )
 	: Entity(world, EntityType::Item, name, description, health, key),
 	parent(&parent),
@@ -34,12 +34,12 @@ void Item::Inspect() const
 
 	if (health == 0)
 	{
-		std::cout << "It's broken.\n";
+		std::cout << "  It's broken.\n";
 	}
 
 	if (key != nullptr)
 	{
-		std::cout << "You need a key to open it.\n";
+		std::cout << "  You need a key to open it.\n";
 	}
 	else if (!contains.empty())
 	{
@@ -66,17 +66,17 @@ void Item::Damage(int damage)
 		{
 			if (item_type == ItemType::BodyPart)
 			{
-				std::cout << "The '" << name << "' has been severed.\n";
+				std::cout << "The '" << name << "' has been severed!\n";
 				item_type = ItemType::Pickable;
 			}
 			else if (item_type == ItemType::Pickable)
 			{
-				std::cout << "The '" << name << "' has been broken.\n";
+				std::cout << "The '" << name << "' has been broken!\n";
 			}
 
 			if (parent->entity_type != EntityType::Room)
 			{
-				std::cout << "The '" << name << " flies off in an arc.\n";
+				std::cout << "The '" << name << "' flies off in an arc!\n";
 				Room* const location = GetRoom();
 				ChangeParent(*location);
 			}
