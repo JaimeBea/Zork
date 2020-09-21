@@ -306,6 +306,13 @@ bool Player::OnPut(const std::string & name, const std::string & container_name)
 		return false;
 	}
 
+	if (container_item == selected_item)
+	{
+		// Recursive put is not allowed
+		std::cout << "You can't put '" << selected_item->name << "' in '" << container_item->name << "'.\n";
+		return false;
+	}
+
 	// Put the item in the container
 	selected_item->ChangeParent(*container_item);
 	std::cout << "You put '" << selected_item->name << "' in '" << container_item->name << "'.\n";
