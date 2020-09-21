@@ -1,4 +1,6 @@
 #include "item.h"
+#include "room.h"
+#include "creature.h"
 
 Item::Item
 (
@@ -41,7 +43,6 @@ void Item::Inspect() const
 	}
 	else if (!contains.empty())
 	{
-		std::cout << "\n";
 		std::cout << "Contains:\n";
 		for (const Entity* const entity : contains)
 		{
@@ -50,7 +51,81 @@ void Item::Inspect() const
 			std::cout << "  " << entity->name << "\n";
 		}
 	}
-	std::cout << "\n";
+}
+
+void Item::Damage(int damage)
+{
+	const int previous_health = health;
+	const ItemType previous_item_type = item_type;
+
+	Entity::Damage(damage);
+
+	if (health == 0)
+	{
+		if (previous_health != 0)
+		{
+			if (item_type == ItemType::BodyPart)
+			{
+				std::cout << "The '" << name << "' has been severed.\n";
+				item_type = ItemType::Pickable;
+			}
+			else if (item_type == ItemType::Pickable)
+			{
+				std::cout << "The '" << name << "' has been broken.\n";
+			}
+
+			if (parent->entity_type != EntityType::Room)
+			{
+				std::cout << "The '" << name << " flies off in an arc.\n";
+				Room* const location = GetRoom();
+				ChangeParent(*location);
+			}
+		}
+		else
+		{
+			std::cout << "The '" << name << "' is already broken.\n";
+		}
+	}
+
+	if (previous_item_type == ItemType::BodyPart)
+	{
+		// Propagate 50% of the damage to the parent
+		parent->Damage(damage / 2);
+	}
+}
+
+Room* Item::GetRoom() const
+{
+	if (parent->entity_type == EntityType::Room)
+	{
+		Room* const parent_room = dynamic_cast<Room*>(parent);
+		return parent_room;
+	}
+	else if (parent->entity_type == EntityType::NPC || parent->entity_type == EntityType::Player)
+	{
+		Creature* const parent_creature = dynamic_cast<Creature*>(parent);
+		return parent_creature->location;
+	}
+	else if (parent->entity_type == EntityType::Item)
+	{
+		Item* const parent_item = dynamic_cast<Item*>(parent);
+		return parent_item->GetRoom();
+	}
+
+	// The item doesn't pertain to a room. This should never happen.
+	return nullptr;
+}
+
+Entity* Item::GetOwner() const
+{
+	// If the parent is an item check the item's owner
+	if (parent->entity_type == EntityType::Item)
+	{
+		Item* const parent_item = dynamic_cast<Item*>(parent);
+		return parent_item->GetOwner();
+	}
+
+	return parent;
 }
 
 void Item::ChangeParent(Entity& new_parent)

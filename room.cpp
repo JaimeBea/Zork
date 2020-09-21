@@ -17,7 +17,6 @@ void Room::Inspect() const
 
 			std::cout << "  " << entity->name << "\n";
 		}
-		std::cout << "\n";
 
 		std::cout << "Exits:\n";
 		for (const Entity* const entity : contains)
@@ -28,7 +27,6 @@ void Room::Inspect() const
 			const Direction exit_direction = exit->origin == this ? exit->direction : GetOppositeDirection(exit->direction);
 			std::cout << "  (" << GetDirectionName(exit_direction) << ") " << exit->name << "\n";
 		}
-		std::cout << "\n";
 	}
 }
 

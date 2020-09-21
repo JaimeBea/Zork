@@ -31,7 +31,10 @@ public:
 	~Item();
 
 	void Inspect() const override;
+	void Damage(int damage) override;
 
+	Room* GetRoom() const;
+	Entity* GetOwner() const;
 	void ChangeParent(Entity& new_parent);
 
 	Entity* parent;

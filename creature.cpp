@@ -41,14 +41,13 @@ void Creature::Inspect() const
 
 	if (health == 0)
 	{
-		std::cout << "Deceased.\n\n";
+		std::cout << "  Deceased.\n";
 	}
 
 	if (!contains.empty())
 	{
 		std::cout << "Holding:\n";
 		ListInventoryRecursive(this);
-		std::cout << "\n";
 
 		std::cout << "Body:\n";
 		for (const Entity* const entity : contains)
@@ -65,6 +64,5 @@ void Creature::Inspect() const
 				std::cout << "  " << item->name << "\n";
 			}
 		}
-		std::cout << "\n";
 	}
 }

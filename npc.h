@@ -10,4 +10,6 @@ class NPC : public Creature
 {
 public:
 	NPC(World& world, Room& location, const std::string& name, const std::string& description, int health);
+
+	void Damage(int damage) override;
 };

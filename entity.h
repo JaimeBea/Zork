@@ -18,9 +18,9 @@ class Entity
 {
 public:
 	Entity(World& world, EntityType entity_type, const std::string& name, const std::string& description, int health, const Item* key);
-	~Entity();
 
 	virtual void Inspect() const;
+	virtual void Damage(int damage);
 
 	World* const world;
 	const EntityType entity_type;

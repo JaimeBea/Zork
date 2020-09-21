@@ -33,18 +33,15 @@ void Exit::Inspect() const
 
 	if (health == 0)
 	{
-		std::cout << "It's broken.\n";
+		std::cout << "  It's broken.\n";
 	}
 
 	if (key != nullptr)
 	{
-		std::cout << "You need a key to open it.\n";
+		std::cout << "  You need a key to open it.\n";
 	}
-
-	std::cout << "\n";
 
 	std::cout << "Connects:\n";
 	std::cout << "  " << origin->name << " (" << GetDirectionName(GetOppositeDirection(direction)) << ")\n";
 	std::cout << "  " << destination->name << " (" << GetDirectionName(direction) << ")\n";
-	std::cout << "\n";
 }

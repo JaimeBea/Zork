@@ -48,7 +48,7 @@ World::World()
 	Item* const shield = new Item(*this, *armory, ItemType::Pickable, "Shield", "Metal shield.", 100, 10, false, nullptr);
 
 	Room* const arena = new Room(*this, "Arena", "The arena is filled with sand and blood stains. The public cheers for Kroz, who is smirking at you.");
-	NPC* const kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.", 100);
+	kroz = new NPC(*this, *arena, "Kroz", "He's about two heads taller than you. You can feel a great sense of danger.", 100);
 	Item* const kroz_head = new Item(*this, *kroz, ItemType::BodyPart, "Kroz Head", "Kroz's head.", 100, 10, false, nullptr);
 	Item* const kroz_right_eye = new Item(*this, *kroz_head, ItemType::BodyPart, "Kroz Right Eye", "Kroz's right eye.", 100, 10, false, nullptr);
 	Item* const kroz_left_eye = new Item(*this, *kroz_head, ItemType::BodyPart, "Kroz Left Eye", "Kroz's left eye.", 100, 10, false, nullptr);
@@ -94,13 +94,27 @@ World::~World()
 	{
 		delete entity;
 	}
-
-	entities.clear();
 }
 
-void World::Tick(const std::vector<std::string>& tokens)
+bool World::Tick(const std::vector<std::string>& tokens)
 {
 	const bool action_executed = ParseCommand(tokens);
+	if (kroz->health == 0)
+	{
+		std::cout << "\n";
+		std::cout << "Congratulations! You have achieved freedom!\n";
+		std::cout << "\n";
+		return true;
+	}
+	if (player->health == 0)
+	{
+		std::cout << "\n";
+		std::cout << "You lose.\n";
+		std::cout << "\n";
+		return true;
+	}
+
+	return false;
 }
 
 bool World::ParseCommand(const std::vector<std::string>& tokens)
@@ -116,27 +130,24 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			std::cout << "  drop <object> - Drops an item.\n";
 			std::cout << "  put <object> in <object> - Puts an item inside an object.\n";
 			std::cout << "  hit <object> with <object> - Hits something with the given object.\n";
-			std::cout << "\n";
 			std::cout << "Objects:\n";
 			std::cout << "  Everything inside the room or inside the objects of the room counts as an object.\n";
 			std::cout << "  You have to be explicit when giving the name of an object or it won't be recognized.\n";
-			std::cout << "\n";
 			std::cout << "Directions:\n";
 			std::cout << "  The only accepted directions are north, south, east and west.\n";
-			std::cout << "\n";
 			return false;
 		}
 		else if (tokens[0] == "examine")
 		{
 			const std::string name = JoinTokens(tokens, 1, tokens.size());
 
-			if (player->Examine(name))
+			if (player->OnExamine(name))
 			{
 				return false;
 			}
 			else
 			{
-				std::cout << "The thing you tried to examine doesn't exist.\n\n";
+				std::cout << "The thing you tried to examine doesn't exist.\n";
 				return false;
 			}
 		}
@@ -145,14 +156,14 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			const Direction direction = GetDirectionFromName(tokens[1]);
 			if (direction != Direction::Unknown)
 			{
-				return player->Go(direction);
+				return player->OnGo(direction);
 			}
 		}
 		else if (tokens[0] == "take")
 		{
 			const std::string name = JoinTokens(tokens, 1, tokens.size());
 
-			if (player->Take(name))
+			if (player->OnTake(name))
 			{
 				return true;
 			}
@@ -165,7 +176,7 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 		{
 			const std::string name = JoinTokens(tokens, 1, tokens.size());
 
-			if (player->Drop(name))
+			if (player->OnDrop(name))
 			{
 				return true;
 			}
@@ -186,14 +197,14 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			}
 			if (in_location == -1)
 			{
-				std::cout << "You have to specify where to put the given item.\n\n";
+				std::cout << "You have to specify where to put the given item.\n";
 				return false;
 			}
 
 			const std::string name = JoinTokens(tokens, 1, in_location);
 			const std::string container_name = JoinTokens(tokens, in_location + 1, tokens.size());
 
-			if (player->Put(name, container_name))
+			if (player->OnPut(name, container_name))
 			{
 				return true;
 			}
@@ -214,14 +225,14 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 			}
 			if (with_location == -1)
 			{
-				std::cout << "You have to specify what you want to use.\n\n";
+				std::cout << "You have to specify what you want to use.\n";
 				return false;
 			}
 
 			const std::string target_name = JoinTokens(tokens, 1, with_location);
 			const std::string source_name = JoinTokens(tokens, with_location + 1, tokens.size());
 
-			if (player->Hit(target_name, source_name))
+			if (player->OnHit(target_name, source_name))
 			{
 				return true;
 			}
@@ -234,7 +245,7 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 		{
 			const std::string name = JoinTokens(tokens, 1, tokens.size());
 
-			if (player->Open(name))
+			if (player->OnOpen(name))
 			{
 				return true;
 			}
@@ -245,6 +256,6 @@ bool World::ParseCommand(const std::vector<std::string>& tokens)
 		}
 	}
 
-	std::cout << "I didn't understand what you wanted to do. Write 'help' to view the possible commands.\n\n";
+	std::cout << "I didn't understand what you wanted to do. Write 'help' to view the possible commands.\n";
 	return false;
 }
